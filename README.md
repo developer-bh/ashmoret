@@ -1,1 +1,3 @@
 # ashmoret
+
+npm run watch

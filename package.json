@@ -1,0 +1,14 @@
+{
+  "name": "ashmoret",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "scss": "node-sass scss/app.scss css/app.css",
+    "serve": "browser-sync start --server --serveStatic '.' --files 'css/*.css, *.html'",
+    "watch": "node-sass --watch scss/app.scss css/app.css & npm run serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

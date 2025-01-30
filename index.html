@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashmoret APP</title>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
+</head>
+<body>
+
+<div class="main">
+    <div class="search-section">
+        <div class="bg">
+            <img src="images/bg-search.svg" alt="Background" />
+        </div>
+        <div class="uk-container">
+            <div class="uk-grid uk-child-width-expand@s" uk-grid>
+                <div class="uk-width-1-1 uk-width-3-4@m custom-3-4">
+                    <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
+                        <form>
+                            <div class="uk-grid uk-grid-small" uk-grid>
+                                <div class="uk-width-1-1 uk-width-1-2@m">
+                                    <input class="uk-input" type="search" value="Free search" id="form-search" class="form-search">
+                                </div>
+                                <div class="uk-width-1-1 uk-width-1-4@m">
+                                    <select class="uk-select" id="form-area" class="form-area">
+                                        <option>Area</option>
+                                        <option>1</option>
+                                    </select>
+                                </div>
+                                <div class="uk-width-1-1 uk-width-1-4@m">
+                                    <select class="uk-select" id="form-category" class="form-category">
+                                        <option>Category</option>
+                                        <option>1</option>
+                                    </select>
+                                </div>
+                                <div class="uk-width-1-1 uk-width-1-2@m toggle-advanced">
+                                    <select class="uk-select" id="form-subcategory" class="form-subategory">
+                                        <option>Subcategory</option>
+                                        <option>1</option>
+                                    </select>
+                                </div>
+                                <div class="uk-width-1-1 uk-width-1-2@m toggle-advanced">
+                                    <select class="uk-select" id="form-city" class="form-city">
+                                        <option>City</option>
+                                        <option>1</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="uk-grid uk-grid-small" uk-grid>
+                                <div class="uk-width-1-1 uk-width-1-2@m">
+                                    <button class="form-advanced" uk-toggle="target: .toggle-advanced; cls: show" type="button">
+                                        <span class="icon">
+                                            <img class="toggle-advanced show" src="images/icons/icon-plus.svg" alt="Icon" />
+                                            <img class="toggle-advanced" src="images/icons/icon-minus.svg" alt="Icon" />
+                                        </span>
+                                        <span>                                  
+                                            <span class="toggle-advanced show">Advanced search</span>
+                                            <span class="toggle-advanced">Hide Advanced search</span>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="uk-width-1-1 uk-width-1-2@m">
+                                    <div class="uk-grid uk-flex-right uk-flex-middle">
+                                        <div class="uk-flex uk-flex-right uk-width-1-2">
+                                            <button class="form-clear">
+                                                <span class="icon">
+                                                    <img src="images/icons/icon-clear.svg" alt="Icon" />
+                                                </span>
+                                                Clear search
+                                            </button>
+                                        </div>
+                                        <div class="uk-width-1-1 uk-width-1-2@m uk-padding-remove">
+                                            <button class="uk-button-primary form-search">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-4@m custom-1-4">
+                    <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
+                        <a href="#/" class="action-audience">
+                            <span class="icon">
+                                <img src="images/icons/icon-star.svg" alt="Icon" />
+                            </span>
+                            Audience choice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="results-section">
+        <div class="uk-container">
+            <div class="results">
+                <div class="card">
+                    <div class="flex">
+                        <div class="results-percents">
+                            <span class="percents">5%
+                                הנחה</span>
+                        </div>
+                        <div class="results-logo">
+                            <div class="results-bage" hidden>if bage</div>
+                            <img src="images/logos/logo-bradex.png" alt="Bradex" />
+                        </div>
+                        <div class="text">
+                            <div class="results-title">BRADEX</div>
+                            <div class="results-text">
+                                <p>רהיטים, ספות, ספות נפתחות, מיטות, מערכות ישיבה, כורסאות</p>
+                            </div>
+                        </div>
+                        <div class="results-location">
+                            50 meters from you
+                        </div>
+                        <div class="results-icons">
+                            <div class="results-phone">
+                                <a href="" class="results-waze">Waze</a>
+                                <a href="" class="results-phone">Phone</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="results-additional">
+                        <div class="flex">
+                            <div class="info">
+                                <div class="results-big-text">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                                </div>
+                                <div class="results-website">
+                                    <a href="">website</a>
+                                </div>
+                                <div class="results-email">
+                                    <a href="">email</a>
+                                </div>
+                                <div class="results-phone">
+                                    <a href="">phone</a>
+                                </div>
+                                <div class="results-waze">
+                                    <a href="">waze</a>
+                                </div>
+                                <div class="results-map">
+                                    google map
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- This is a button toggling the modal -->
+    <button uk-toggle="target: #my-id" type="button">Modal</button>
+
+    <!-- This is the modal -->
+    <div id="my-id" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Modal title</h2>
+            <button class="uk-modal-close" type="button">Modal close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit-icons.min.js"></script>
+</body>
+</html>
