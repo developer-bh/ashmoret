@@ -1,14 +1,21 @@
 html {
   direction: rtl; }
 
-body .uk-grid {
-  margin-left: 0; }
-  body .uk-grid > * {
-    padding-left: 14px; }
+body {
+  font-family: "TRY Clother";
+  background-color: #F6F8FF;
+  min-height: 100vh; }
+  body .uk-container {
+    max-width: 1240px; }
+  body .uk-grid {
+    margin-left: 0; }
+    body .uk-grid > * {
+      padding-left: 14px; }
 
 .search-section {
   padding: 56px 0;
-  position: relative; }
+  position: relative;
+  z-index: 1; }
   .search-section .bg {
     position: absolute;
     top: 0;
@@ -57,7 +64,25 @@ body .uk-grid {
     background-color: #F6F8FF !important;
     border-radius: 8px;
     border: 0;
-    height: 44px !important; }
+    padding: 0 14px;
+    height: 44px !important;
+    color: #737895;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 25.2px; }
+    .search-section form input::placeholder, .search-section form select::placeholder {
+      color: #737895; }
+  .search-section form input[type="search"] {
+    padding: 0 54px 0 14px;
+    background-image: url("../images/icons/icon-search.svg");
+    background-position: 96%;
+    background-size: 24px;
+    background-repeat: no-repeat; }
+  .search-section form select {
+    background-image: url("../images/icons/icon-chevron.svg") !important;
+    background-position: 6% !important;
+    background-size: 24px;
+    background-repeat: no-repeat !important; }
   .search-section form .toggle-advanced {
     display: none; }
     .search-section form .toggle-advanced.show {
@@ -103,18 +128,108 @@ body .uk-grid {
     line-height: 19.6px; }
 
 .results-section {
-  padding: 34px 0;
-  background-color: #F6F8FF; }
-  .results-section .results {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; }
+  padding: 34px 0; }
   .results-section .card {
     box-shadow: 0px 2px 12px 0px #7378951A;
     border-radius: 16px;
     padding: 16px 13px 16px 38px;
     background-color: white; }
+    .results-section .card.uk-open .accordion img:first-child {
+      display: none; }
+    .results-section .card.uk-open .accordion img:nth-of-type(2) {
+      display: block !important; }
     .results-section .card .flex {
       display: flex;
-      align-items: center;
-      gap: 20px; }
+      align-items: center; }
+      .results-section .card .flex:before {
+        display: none; }
+      .results-section .card .flex .results-percents {
+        min-width: 81px;
+        width: 81px;
+        margin-left: 10px; }
+        .results-section .card .flex .results-percents .percents {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: #0FCE95;
+          font-size: 24px;
+          font-weight: 900;
+          line-height: 26.4px;
+          text-align: center; }
+          .results-section .card .flex .results-percents .percents span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 39.6px; }
+            .results-section .card .flex .results-percents .percents span .symbol {
+              position: relative;
+              top: 3px;
+              font-size: 24px; }
+      .results-section .card .flex .results-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 26px;
+        width: 108px;
+        min-width: 108px;
+        height: 108px;
+        border-radius: 16px;
+        border: 1px solid #E9ECF8; }
+        .results-section .card .flex .results-logo img {
+          width: 100%; }
+      .results-section .card .flex .text {
+        width: 100%;
+        max-width: 422px;
+        margin-left: 25px; }
+        .results-section .card .flex .text .results-title {
+          margin-bottom: 2px;
+          color: #23233A;
+          font-size: 24px;
+          font-weight: 700;
+          line-height: 33.6px; }
+        .results-section .card .flex .text .results-text p {
+          color: #23233A;
+          font-size: 18px;
+          font-weight: 400;
+          line-height: 21.6px; }
+      .results-section .card .flex .results-location {
+        width: 100%;
+        max-width: 205px;
+        margin-left: 25px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #237DFF;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 19.2px; }
+      .results-section .card .flex .results-icons {
+        display: flex;
+        gap: 12px;
+        margin-left: 80px; }
+        .results-section .card .flex .results-icons .icon {
+          min-width: 48px; }
+      .results-section .card .flex .accordion {
+        min-width: 48px;
+        cursor: pointer; }
+        .results-section .card .flex .accordion img:nth-of-type(2) {
+          display: none; }
+  .results-section .uk-accordion-content {
+    margin-top: 5px; }
+    .results-section .uk-accordion-content .results-additional {
+      position: relative;
+      z-index: 1;
+      margin-right: 225px;
+      margin-left: 130px;
+      padding-top: 7px; }
+      .results-section .uk-accordion-content .results-additional:before {
+        position: absolute;
+        content: '';
+        right: 0;
+        top: 0;
+        width: calc(100% - 51px);
+        height: 2px;
+        background-color: #F6F8FF; }

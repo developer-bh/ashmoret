@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ashmoret APP</title>
+    <!-- Fonts -->
+    <link href="https://db.onlinewebfonts.com/c/3dbf1e44cf1e6d03929b7d0d4f4e17f4?family=TRY+Clother" rel="stylesheet">
     <!-- Styles -->
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/css/uikit.min.css" />
@@ -22,7 +24,7 @@
                         <form>
                             <div class="uk-grid uk-grid-small" uk-grid>
                                 <div class="uk-width-1-1 uk-width-1-2@m">
-                                    <input class="uk-input" type="search" value="Free search" id="form-search" class="form-search">
+                                    <input class="uk-input" type="search" placeholder="Free search" id="form-search" class="form-search">
                                 </div>
                                 <div class="uk-width-1-1 uk-width-1-4@m">
                                     <select class="uk-select" id="form-area" class="form-area">
@@ -50,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="uk-grid uk-grid-small" uk-grid>
-                                <div class="uk-width-1-1 uk-width-1-2@m">
+                                <div class="uk-width-1-1 uk-width-1-2@m uk-flex uk-flex-middle">
                                     <button class="form-advanced" uk-toggle="target: .toggle-advanced; cls: show" type="button">
                                         <span class="icon">
                                             <img class="toggle-advanced show" src="images/icons/icon-plus.svg" alt="Icon" />
@@ -99,57 +101,230 @@
     <div class="results-section">
         <div class="uk-container">
             <div class="results">
-                <div class="card">
-                    <div class="flex">
-                        <div class="results-percents">
-                            <span class="percents">5%
-                                הנחה</span>
-                        </div>
-                        <div class="results-logo">
-                            <div class="results-bage" hidden>if bage</div>
-                            <img src="images/logos/logo-bradex.png" alt="Bradex" />
-                        </div>
-                        <div class="text">
-                            <div class="results-title">BRADEX</div>
-                            <div class="results-text">
-                                <p>רהיטים, ספות, ספות נפתחות, מיטות, מערכות ישיבה, כורסאות</p>
+                <ul uk-accordion>
+                    <li class="card">
+            
+                            <div class="uk-accordion-title flex">
+                                <div class="results-percents">
+                                    <span class="percents">
+                                        <span>
+                                            <span class="symbol">%</span>
+                                            5
+                                        </span>
+                                        הנחה</span>
+                                </div>
+                                <div class="results-logo">
+                                    <div class="results-bage" hidden>if bage</div>
+                                    <img src="images/logos/logo-bradex.png" alt="Bradex" />
+                                </div>
+                                <div class="text">
+                                    <div class="results-title">BRADEX</div>
+                                    <div class="results-text">
+                                        <p>רהיטים, ספות, ספות נפתחות, מיטות, מערכות ישיבה, כורסאות</p>
+                                    </div>
+                                </div>
+                                <div class="results-location">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-location.svg" alt="Icon" />
+                                    </span>
+                                    50 meters from you
+                                </div>
+                                <div class="results-icons">
+                                        <a href="" class="results-phone">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-phone.svg" alt="Icon" />
+                                            </span>
+                                        </a>
+                                        <a href="" class="results-waze">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-waze.svg" alt="Icon" />
+                                            </span>
+                                        </a>
+                                </div>
+                                <div class="accordion">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-plus-accordion.svg" alt="Icon" />
+                                        <img src="images/icons/icon-minus-accordion.svg" alt="Icon" />
+                                    </span>
+                                </div>
+                            </div>
+   
+                        <div class="uk-accordion-content">
+                            <div class="results-additional">
+                                <div class="flex">
+                                    <div class="info">
+                                        <div class="results-big-text">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                                        </div>
+                                        <div class="results-website">
+                                            <a href="">website</a>
+                                        </div>
+                                        <div class="results-email">
+                                            <a href="">email</a>
+                                        </div>
+                                        <div class="results-phone">
+                                            <a href="">phone</a>
+                                        </div>
+                                        <div class="results-waze">
+                                            <a href="">waze</a>
+                                        </div>
+                                        <div class="results-map">
+                                            google map
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="results-location">
-                            50 meters from you
-                        </div>
-                        <div class="results-icons">
-                            <div class="results-phone">
-                                <a href="" class="results-waze">Waze</a>
-                                <a href="" class="results-phone">Phone</a>
+                    </li>
+                    <li class="card">
+         
+                            <div class="uk-accordion-title flex">
+                                <div class="results-percents">
+                                    <span class="percents">
+                                        <span>
+                                            <span class="symbol">%</span>
+                                            54
+                                        </span>
+                                        הנחה</span>
+                                </div>
+                                <div class="results-logo">
+                                    <div class="results-bage" hidden>if bage</div>
+                                    <img src="images/logos/logo-bradex.png" alt="Bradex" />
+                                </div>
+                                <div class="text">
+                                    <div class="results-title">BRADEX</div>
+                                    <div class="results-text">
+                                        <p>רהיטים, ספות, ספות נפתחות, מיטות, מערכות ישיבה, כורסאות</p>
+                                    </div>
+                                </div>
+                                <div class="results-location">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-location.svg" alt="Icon" />
+                                    </span>
+                                    50 meters from you
+                                </div>
+                                <div class="results-icons">
+                                        <a href="" class="results-phone">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-phone.svg" alt="Icon" />
+                                            </span>
+                                        </a>
+                                        <a href="" class="results-waze">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-waze.svg" alt="Icon" />
+                                            </span>
+                                        </a>
+                                </div>
+                                <div class="accordion">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-plus-accordion.svg" alt="Icon" />
+                                        <img src="images/icons/icon-minus-accordion.svg" alt="Icon" />
+                                    </span>
+                                </div>
+                            </div>
+         
+                        <div class="uk-accordion-content">
+                            <div class="results-additional">
+                                <div class="flex">
+                                    <div class="info">
+                                        <div class="results-big-text">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                                        </div>
+                                        <div class="results-website">
+                                            <a href="">website</a>
+                                        </div>
+                                        <div class="results-email">
+                                            <a href="">email</a>
+                                        </div>
+                                        <div class="results-phone">
+                                            <a href="">phone</a>
+                                        </div>
+                                        <div class="results-waze">
+                                            <a href="">waze</a>
+                                        </div>
+                                        <div class="results-map">
+                                            google map
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="results-additional">
-                        <div class="flex">
-                            <div class="info">
-                                <div class="results-big-text">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                    </li>
+                    <li class="card">
+         
+                            <div class="uk-accordion-title flex">
+                                <div class="results-percents">
+                                    <span class="percents">
+                                        <span>
+                                            <span class="symbol">%</span>
+                                            51
+                                        </span>
+                                        הנחה</span>
                                 </div>
-                                <div class="results-website">
-                                    <a href="">website</a>
+                                <div class="results-logo">
+                                    <div class="results-bage" hidden>if bage</div>
+                                    <img src="images/logos/logo-bradex.png" alt="Bradex" />
                                 </div>
-                                <div class="results-email">
-                                    <a href="">email</a>
+                                <div class="text">
+                                    <div class="results-title">BRADEX</div>
+                                    <div class="results-text">
+                                        <p>רהיטים, ספות, ספות נפתחות, מיטות, מערכות ישיבה, כורסאות</p>
+                                    </div>
                                 </div>
-                                <div class="results-phone">
-                                    <a href="">phone</a>
+                                <div class="results-location">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-location.svg" alt="Icon" />
+                                    </span>
+                                    50 meters from you
                                 </div>
-                                <div class="results-waze">
-                                    <a href="">waze</a>
+                                <div class="results-icons">
+                                        <a href="" class="results-phone">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-phone.svg" alt="Icon" />
+                                            </span>
+                                        </a>
+                                        <a href="" class="results-waze">
+                                            <span class="icon">
+                                                <img src="images/icons/icon-waze.svg" alt="Icon" />
+                                            </span>
+                                        </a>
                                 </div>
-                                <div class="results-map">
-                                    google map
+                                <div class="accordion">
+                                    <span class="icon">
+                                        <img src="images/icons/icon-plus-accordion.svg" alt="Icon" />
+                                        <img src="images/icons/icon-minus-accordion.svg" alt="Icon" />
+                                    </span>
+                                </div>
+                            </div>
+         
+                        <div class="uk-accordion-content">
+                            <div class="results-additional">
+                                <div class="flex">
+                                    <div class="info">
+                                        <div class="results-big-text">
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris</p>
+                                        </div>
+                                        <div class="results-website">
+                                            <a href="">website</a>
+                                        </div>
+                                        <div class="results-email">
+                                            <a href="">email</a>
+                                        </div>
+                                        <div class="results-phone">
+                                            <a href="">phone</a>
+                                        </div>
+                                        <div class="results-waze">
+                                            <a href="">waze</a>
+                                        </div>
+                                        <div class="results-map">
+                                            google map
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
