@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>API Search</h1>
     <SearchSection />
   </div>
 </template>
