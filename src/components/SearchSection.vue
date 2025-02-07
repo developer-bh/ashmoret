@@ -62,7 +62,7 @@
                     </button>
                     </div>
                     <div class="uk-width-1-1 uk-width-1-2@m uk-padding-remove">
-                      <button class="uk-button-primary form-search">
+                      <button class="uk-button-primary form-search" @click="performSearch">
                         Search
                       </button>
                     </div>
@@ -85,18 +85,28 @@
       </div>
     </div>
   </div>
+  <SearchResults :results="searchResults" :pageIndex="pageIndex" />
 </template>
 
 <script>
+import axios from 'axios';
 import Papa from 'papaparse';
+import SearchResults from './SearchResults.vue'; // Ensure the correct path
+
 export default {
+  components: {
+    SearchResults
+  },
   data() {
     return {
       areas: [],
       categories: [],
       subcategories: [],
       cities: [],
-      isAdvancedSearchVisible: false
+      isAdvancedSearchVisible: false,
+      searchResults: [], // Add searchResults to the data object,
+      pageIndex: 1,
+      pageSize: 20
     };
   },
   mounted() {
@@ -118,6 +128,10 @@ export default {
     },
     toggleAdvancedSearch() {
       this.isAdvancedSearchVisible = !this.isAdvancedSearchVisible;
+      if (!this.isAdvancedSearchVisible) {
+        document.getElementById('form-subcategory').selectedIndex = 0;
+        document.getElementById('form-city').selectedIndex = 0;
+      }
     },
     processCSVData(data) {
       const categoriesSet = new Set();
@@ -153,8 +167,54 @@ export default {
         document.getElementById('form-subcategory').selectedIndex = 0;
         document.getElementById('form-city').selectedIndex = 0;
       }
-    }
+    },
+    async getFilteredResults(url) {
+      return await axios.get(url);
+    },
+    async performSearch(event) {
+      event.preventDefault();
+      try {
+        const userLocation = localStorage.getItem('userCoordinates');
+        const { latitude, longitude } = userLocation ? JSON.parse(userLocation) : { latitude: 0, longitude: 0 };
 
+        const filter = {
+          SL_CityArea: document.getElementById('form-area')?.value || '',
+          SL_BusinessTypeGroup: document.getElementById('form-category')?.value || '',
+          SL_LocCity: this.isAdvancedSearchVisible ? document.getElementById('form-city')?.value : '',
+          SL_BusinessType: this.isAdvancedSearchVisible ? document.getElementById('form-subcategory')?.value : '',
+          SL_location: [longitude, latitude],
+          freeText: document.getElementById('form-search')?.value || ''
+        };
+
+        const params = {
+          format: 'json',
+          filter: filter,
+          pager: {
+            pageSize: this.pageSize,
+            pageIndex: this.pageIndex
+          },
+          iid: '673f39ed0630441602677413'
+        };
+
+        const locationPermissionDenied = localStorage.getItem('locationPermissionDenied');
+
+        if (locationPermissionDenied && JSON.parse(locationPermissionDenied)) {
+          params.SL_BGNumberGroupOrder = 1;
+        } else if (userLocation) {
+          params.SL_location = [longitude, latitude];
+        }
+
+        const queryString = new URLSearchParams(params).toString();
+        const url = `https://cdnapi.bamboo-video.com/api/ashmoret/?${queryString}`;
+        const response = await this.getFilteredResults(url);
+        this.searchResults = response.data.data;
+        console.log('Search results:', response.data.data);
+
+        console.log('Search results:', response.data.data);
+      } catch (error) {
+        console.error('Error performing search:', error);
+      }
+    }
   }
 };
 </script>

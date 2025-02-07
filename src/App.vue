@@ -1,17 +1,22 @@
 <template>
-  <div>
+  <div class="main">
     <SearchSection />
+    <LocationModal />
   </div>
 </template>
 
 <script>
-// import SearchComponent from "./components/SearchComponent.vue";
 import SearchSection from './components/SearchSection.vue';
+import LocationModal from './components/LocationModal.vue';
 
 export default {
   components: {
-    // SearchComponent,
-    SearchSection
+    SearchSection,
+    LocationModal
   },
 };
 </script>
+
+<style scoped>
+/* Add any styles if needed */
+</style>
