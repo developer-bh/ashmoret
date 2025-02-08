@@ -171,48 +171,72 @@ export default {
     async getFilteredResults(url) {
       return await axios.get(url);
     },
+
     async performSearch(event) {
       event.preventDefault();
       try {
-        const userLocation = localStorage.getItem('userCoordinates');
-        const { latitude, longitude } = userLocation ? JSON.parse(userLocation) : { latitude: 0, longitude: 0 };
+        const userLocation = localStorage.getItem("userCoordinates");
+        const locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
 
-        const filter = {
-          SL_CityArea: document.getElementById('form-area')?.value || '',
-          SL_BusinessTypeGroup: document.getElementById('form-category')?.value || '',
-          SL_LocCity: this.isAdvancedSearchVisible ? document.getElementById('form-city')?.value : '',
-          SL_BusinessType: this.isAdvancedSearchVisible ? document.getElementById('form-subcategory')?.value : '',
-          SL_location: [longitude, latitude],
-          freeText: document.getElementById('form-search')?.value || ''
-        };
+        let filter = {};
 
-        const params = {
-          format: 'json',
-          filter: filter,
-          pager: {
-            pageSize: this.pageSize,
-            pageIndex: this.pageIndex
-          },
-          iid: '673f39ed0630441602677413'
-        };
+        // Collect filter inputs, but only include non-empty values
+        const cityArea = document.getElementById("form-area")?.value;
+        if (cityArea) filter.SL_CityArea = cityArea;
 
-        const locationPermissionDenied = localStorage.getItem('locationPermissionDenied');
+        const businessGroup = document.getElementById("form-category")?.value;
+        if (businessGroup) filter.SL_BusinessTypeGroup = businessGroup;
 
-        if (locationPermissionDenied && JSON.parse(locationPermissionDenied)) {
-          params.SL_BGNumberGroupOrder = 1;
-        } else if (userLocation) {
-          params.SL_location = [longitude, latitude];
+        if (this.isAdvancedSearchVisible) {
+          const locCity = document.getElementById("form-city")?.value;
+          if (locCity) filter.SL_LocCity = locCity;
+
+          const businessType = document.getElementById("form-subcategory")?.value;
+          if (businessType) filter.SL_BusinessType = businessType;
         }
 
-        const queryString = new URLSearchParams(params).toString();
-        const url = `https://cdnapi.bamboo-video.com/api/ashmoret/?${queryString}`;
+        const freeText = document.getElementById("form-search")?.value;
+        if (freeText) filter.freeText = freeText;
+
+        // Add user location if permission is granted
+        if (userLocation && locationPermissionDenied === undefined) {
+          const { latitude, longitude } = JSON.parse(userLocation);
+          filter.SL_location = [longitude, latitude];
+        }
+
+        // Remove filter if it's empty
+        const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
+
+        // Pager settings
+        const pager = {
+          pageSize: this.pageSize,
+          pageIndex: this.pageIndex,
+        };
+        const pagerString = JSON.stringify(pager);
+
+        // Build query parameters manually
+        let queryParams = new URLSearchParams();
+        queryParams.append("format", "json");
+        queryParams.append("iid", "673f39ed0630441602677413");
+
+        if (filterString) queryParams.append("filter", filterString);
+        queryParams.append("pager", pagerString);
+
+        if (locationPermissionDenied && JSON.parse(locationPermissionDenied)) {
+          queryParams.append("SL_BGNumberGroupOrder", "1");
+        }
+
+        // Construct the final URL
+        const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
+        const url = `${baseUrl}?${queryParams.toString()}`;
+
+        console.log("Search URL:", url);
+
         const response = await this.getFilteredResults(url);
         this.searchResults = response.data.data;
-        console.log('Search results:', response.data.data);
-
-        console.log('Search results:', response.data.data);
+        console.log("Search results:", response.data.data);
       } catch (error) {
-        console.error('Error performing search:', error);
+        console.error("Error performing search:", error);
       }
     }
   }
