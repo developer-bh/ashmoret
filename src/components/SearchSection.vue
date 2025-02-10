@@ -1,5 +1,8 @@
 <!-- src/components/SearchSection.vue -->
 <template>
+  <div class="loading-overlay" v-if="isLoading">
+    <div class="spinner"></div>
+  </div>
   <div class="search-section">
     <div class="bg">
       <img src="../../images/bg-search.svg" alt="Background" />
@@ -85,7 +88,7 @@
       </div>
     </div>
   </div>
-  <SearchResults :results="searchResults" :pageIndex="pageIndex" />
+  <SearchResults :results="searchResults"/>
 </template>
 
 <script>
@@ -105,8 +108,9 @@ export default {
       cities: [],
       isAdvancedSearchVisible: false,
       searchResults: [], // Add searchResults to the data object,
-      pageIndex: 1,
-      pageSize: 20
+      isLoading: false,
+      userLocation: null,
+      locationPermissionDenied: null
     };
   },
   mounted() {
@@ -167,82 +171,149 @@ export default {
         document.getElementById('form-subcategory').selectedIndex = 0;
         document.getElementById('form-city').selectedIndex = 0;
       }
+      this.searchResults = []; // Reset search results
     },
     async getFilteredResults(url) {
       return await axios.get(url);
     },
 
-    async performSearch(event) {
-      event.preventDefault();
-      try {
-        const userLocation = localStorage.getItem("userCoordinates");
-        const locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
+   async performSearch(event) {
+     event.preventDefault();
 
+     this.isLoading = true; // Show loading
+
+     try {
+       this.userLocation = localStorage.getItem("userCoordinates");
+       this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
+
+       let filter = {};
+
+       // Collect filter inputs, but only include non-empty values
+       const cityArea = document.getElementById("form-area")?.value;
+       if (cityArea) filter.SL_CityArea = cityArea;
+
+       const businessGroup = document.getElementById("form-category")?.value;
+       if (businessGroup) filter.SL_BusinessTypeGroup = businessGroup;
+
+       if (this.isAdvancedSearchVisible) {
+         const locCity = document.getElementById("form-city")?.value;
+         if (locCity) filter.SL_LocCity = locCity;
+
+         const businessType = document.getElementById("form-subcategory")?.value;
+         if (businessType) filter.SL_BusinessType = businessType;
+       }
+
+       const freeText = document.getElementById("form-search")?.value;
+       if (freeText) filter.freeText = freeText;
+
+       // Add user location if permission is granted
+       if (this.userLocation && this.locationPermissionDenied === undefined) {
+         const { latitude, longitude } = JSON.parse(this.userLocation);
+         filter.SL_location = [longitude, latitude];
+       }
+
+       // Remove filter if it's empty
+       const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
+       if (filterString == null) {
+         alert("Please provide at least one search criteria.");
+         this.isLoading = false; // Hide loading
+         return;
+       }
+
+       // Build query parameters manually
+       let queryParams = new URLSearchParams();
+       queryParams.append("format", "json");
+       queryParams.append("iid", "673f39ed0630441602677413");
+
+       if (filterString) queryParams.append("filter", filterString);
+
+       if (this.locationPermissionDenied && JSON.parse(this.locationPermissionDenied)) {
+         queryParams.append("SL_BGNumberGroupOrder", "1");
+       }
+
+       // Construct the final URL
+       const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
+       const url = `${baseUrl}?${queryParams.toString()}`;
+
+       const response = await this.getFilteredResults(url);
+       const data = response.data.data;
+       this.searchResults = await this.processSearchResults(data);
+       // this.searchResults = response.data.data;
+     } catch (error) {
+       console.error("Error performing search:", error);
+     } finally {
+       this.isLoading = false; // Hide loading
+     }
+   },
+    async processSearchResults(data) {
+      const dataWithStores = [];
+
+      for (const item of data) {
+        if (item.SL_CH_Code) {
+          const storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
+          if (storeLocations) {
+            item.storeLocations = [...storeLocations];
+          }
+        }
+        dataWithStores.push(item);
+      }
+
+      return dataWithStores;
+    },
+    async searchChainStoreLocation(SL_Loc_Name) {
+      try {
         let filter = {};
 
-        // Collect filter inputs, but only include non-empty values
-        const cityArea = document.getElementById("form-area")?.value;
-        if (cityArea) filter.SL_CityArea = cityArea;
-
-        const businessGroup = document.getElementById("form-category")?.value;
-        if (businessGroup) filter.SL_BusinessTypeGroup = businessGroup;
-
-        if (this.isAdvancedSearchVisible) {
-          const locCity = document.getElementById("form-city")?.value;
-          if (locCity) filter.SL_LocCity = locCity;
-
-          const businessType = document.getElementById("form-subcategory")?.value;
-          if (businessType) filter.SL_BusinessType = businessType;
-        }
-
-        const freeText = document.getElementById("form-search")?.value;
-        if (freeText) filter.freeText = freeText;
-
-        // Add user location if permission is granted
-        if (userLocation && locationPermissionDenied === undefined) {
+        if (this.userLocation && this.locationPermissionDenied === undefined) {
           const { latitude, longitude } = JSON.parse(userLocation);
           filter.SL_location = [longitude, latitude];
         }
+        filter.SL_Loc_Name = SL_Loc_Name;
+        const filterString = JSON.stringify(filter);
 
-        // Remove filter if it's empty
-        const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
-
-        // Pager settings
-        const pager = {
-          pageSize: this.pageSize,
-          pageIndex: this.pageIndex,
-        };
-        const pagerString = JSON.stringify(pager);
-
-        // Build query parameters manually
-        let queryParams = new URLSearchParams();
+        const queryParams = new URLSearchParams();
         queryParams.append("format", "json");
+        queryParams.append("filter", filterString);
         queryParams.append("iid", "673f39ed0630441602677413");
 
-        if (filterString) queryParams.append("filter", filterString);
-        queryParams.append("pager", pagerString);
-
-        if (locationPermissionDenied && JSON.parse(locationPermissionDenied)) {
-          queryParams.append("SL_BGNumberGroupOrder", "1");
-        }
-
-        // Construct the final URL
         const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
         const url = `${baseUrl}?${queryParams.toString()}`;
-
-        console.log("Search URL:", url);
-
-        const response = await this.getFilteredResults(url);
-        this.searchResults = response.data.data;
-        console.log("Search results:", response.data.data);
+        const response = await axios.get(url);
+        return response.data.data;
       } catch (error) {
-        console.error("Error performing search:", error);
+        console.error("Error searching for chain store location:", error);
+        return null;
       }
-    }
+    },
   }
 };
 </script>
 
 <style scoped>
-/* Add any styles if needed */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
