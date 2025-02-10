@@ -35,7 +35,7 @@
                 }}
               </div>
               <div class="results-icons" v-if="!result.SL_CH_Code">
-                <a href="`tel:${result.SL_BG_Phone}`" class="results-phone">
+                <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone">
                                             <span class="icon">
                                                 <img src="/images/icons/icon-phone.svg" alt="Phone Icon"/>
                                             </span>
