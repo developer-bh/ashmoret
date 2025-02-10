@@ -16,6 +16,7 @@
     <div class="search-section">
         <div class="bg">
             <img src="images/bg-search.svg" alt="Background" />
+            <img src="images/bg-search-mobile.svg" alt="Background" />
         </div>
         <div class="uk-container">
             <div class="uk-grid uk-child-width-expand@s" uk-grid>
@@ -65,9 +66,9 @@
                                     </button>
                                 </div>
                                 <div class="uk-width-1-1 uk-width-1-2@m">
-                                    <div class="uk-grid uk-flex-right uk-flex-middle">
-                                        <div class="uk-flex uk-flex-right uk-width-1-2">
-                                            <button class="form-clear">
+                                    <div class="uk-grid uk-flex-right uk-flex-middle form-clear-wrapper">
+                                        <div class="uk-flex uk-flex-right uk-width-1-1 uk-width-1-2@m">
+                                            <button class="form-clear uk-width-1-1 uk-width-auto@m">
                                                 <span class="icon">
                                                     <img src="images/icons/icon-clear.svg" alt="Icon" />
                                                 </span>
@@ -593,7 +594,7 @@
         </div>
     </div>
     <!-- This is a button toggling the modal -->
-    <button uk-toggle="target: #modal-location" type="button">Modal</button>
+    <!-- <button uk-toggle="target: #modal-location" type="button">Modal</button> -->
 
     <!-- This is the modal -->
     <div id="modal-location" uk-modal>
@@ -620,6 +621,7 @@
 </div>
 
 <!-- Scripts -->
+<script src="js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.22/dist/js/uikit-icons.min.js"></script>
 </body>
