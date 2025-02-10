@@ -91,6 +91,7 @@
   <SearchResults :results="searchResults"/>
 </template>
 
+
 <script>
 import axios from 'axios';
 import Papa from 'papaparse';
@@ -115,6 +116,7 @@ export default {
   },
   mounted() {
     this.loadData();
+    this.setFormFieldsFromUrl();
   },
   methods: {
     async loadData() {
@@ -176,75 +178,79 @@ export default {
     async getFilteredResults(url) {
       return await axios.get(url);
     },
+    async performSearch(event) {
+      event.preventDefault();
 
-   async performSearch(event) {
-     event.preventDefault();
+      this.isLoading = true; // Show loading
 
-     this.isLoading = true; // Show loading
+      try {
+        this.userLocation = localStorage.getItem("userCoordinates") ?? null;
+        this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
 
-     try {
-       this.userLocation = localStorage.getItem("userCoordinates");
-       this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
+        let filter = {};
 
-       let filter = {};
+        // Collect filter inputs, but only include non-empty values
+        const cityArea = document.getElementById("form-area")?.value;
+        if (cityArea) filter.SL_CityArea = cityArea;
 
-       // Collect filter inputs, but only include non-empty values
-       const cityArea = document.getElementById("form-area")?.value;
-       if (cityArea) filter.SL_CityArea = cityArea;
+        const businessGroup = document.getElementById("form-category")?.value;
+        if (businessGroup) filter.SL_BusinessTypeGroup = businessGroup;
 
-       const businessGroup = document.getElementById("form-category")?.value;
-       if (businessGroup) filter.SL_BusinessTypeGroup = businessGroup;
+        if (this.isAdvancedSearchVisible) {
+          const locCity = document.getElementById("form-city")?.value;
+          if (locCity) filter.SL_LocCity = locCity;
 
-       if (this.isAdvancedSearchVisible) {
-         const locCity = document.getElementById("form-city")?.value;
-         if (locCity) filter.SL_LocCity = locCity;
+          const businessType = document.getElementById("form-subcategory")?.value;
+          if (businessType) filter.SL_BusinessType = businessType;
+        }
 
-         const businessType = document.getElementById("form-subcategory")?.value;
-         if (businessType) filter.SL_BusinessType = businessType;
-       }
+        const freeText = document.getElementById("form-search")?.value;
+        if (freeText) filter.freeText = freeText;
 
-       const freeText = document.getElementById("form-search")?.value;
-       if (freeText) filter.freeText = freeText;
+        // Add user location if permission is granted
+        if (this.userLocation && this.locationPermissionDenied === undefined) {
+          const { latitude, longitude } = JSON.parse(this.userLocation);
+          filter.SL_location = [longitude, latitude];
+        }
 
-       // Add user location if permission is granted
-       if (this.userLocation && this.locationPermissionDenied === undefined) {
-         const { latitude, longitude } = JSON.parse(this.userLocation);
-         filter.SL_location = [longitude, latitude];
-       }
+        // Remove filter if it's empty
+        const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
+        const urlParams = new URLSearchParams(window.location.search);
+       if (filterString == null && !urlParams.toString()) {
+          alert("Please provide at least one search criteria.");
+          this.isLoading = false; // Hide loading
+          return;
+        }
 
-       // Remove filter if it's empty
-       const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
-       if (filterString == null) {
-         alert("Please provide at least one search criteria.");
-         this.isLoading = false; // Hide loading
-         return;
-       }
+        // Update URL with search parameters
+        const searchParams = new URLSearchParams(filter).toString();
+        window.history.pushState(null, '', `?${searchParams}`);
 
-       // Build query parameters manually
-       let queryParams = new URLSearchParams();
-       queryParams.append("format", "json");
-       queryParams.append("iid", "673f39ed0630441602677413");
+        // Build query parameters manually
+        let queryParams = new URLSearchParams();
+        queryParams.append("format", "json");
+        queryParams.append("iid", "673f39ed0630441602677413");
 
-       if (filterString) queryParams.append("filter", filterString);
+        if (filterString) queryParams.append("filter", filterString);
 
-       if (this.locationPermissionDenied && JSON.parse(this.locationPermissionDenied)) {
-         queryParams.append("SL_BGNumberGroupOrder", "1");
-       }
+        if (this.locationPermissionDenied && JSON.parse(this.locationPermissionDenied)) {
+          queryParams.append("SL_BGNumberGroupOrder", "1");
+        }
 
-       // Construct the final URL
-       const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
-       const url = `${baseUrl}?${queryParams.toString()}`;
+        // Construct the final URL
+        const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
+        const url = `${baseUrl}?${queryParams.toString()}`;
 
-       const response = await this.getFilteredResults(url);
-       const data = response.data.data;
-       this.searchResults = await this.processSearchResults(data);
-       // this.searchResults = response.data.data;
-     } catch (error) {
-       console.error("Error performing search:", error);
-     } finally {
-       this.isLoading = false; // Hide loading
-     }
-   },
+        const response = await this.getFilteredResults(url);
+        const data = response.data.data;
+        this.searchResults = await this.processSearchResults(data);
+        // this.searchResults = response.data.data;
+      } catch (error) {
+        console.error("Error performing search:", error);
+      } finally {
+        this.isLoading = false; // Hide loading
+      }
+    },
     async processSearchResults(data) {
       const dataWithStores = [];
 
@@ -265,7 +271,7 @@ export default {
         let filter = {};
 
         if (this.userLocation && this.locationPermissionDenied === undefined) {
-          const { latitude, longitude } = JSON.parse(userLocation);
+          const { latitude, longitude } = JSON.parse(this.userLocation);
           filter.SL_location = [longitude, latitude];
         }
         filter.SL_Loc_Name = SL_Loc_Name;
@@ -285,9 +291,41 @@ export default {
         return null;
       }
     },
+    setFormFieldsFromUrl() {
+      window.addEventListener('load', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        const cityArea = urlParams.get('SL_CityArea');
+        if (cityArea) document.getElementById('form-area').value = cityArea;
+
+        const businessGroup = urlParams.get('SL_BusinessTypeGroup');
+        if (businessGroup) document.getElementById('form-category').value = businessGroup;
+
+        const locCity = urlParams.get('SL_LocCity');
+        if (locCity) {
+          this.isAdvancedSearchVisible = true;
+          document.getElementById('form-city').value = locCity;
+        }
+
+        const businessType = urlParams.get('SL_BusinessType');
+        if (businessType) {
+          this.isAdvancedSearchVisible = true;
+          document.getElementById('form-subcategory').value = businessType;
+        }
+
+        const freeText = urlParams.get('freeText');
+        if (freeText) document.getElementById('form-search').value = freeText;
+
+        // Perform search if there are any parameters in the URL
+        if (cityArea || businessGroup || locCity || businessType || freeText) {
+          this.performSearch(new Event('submit'));
+        }
+      });
+    }
   }
 };
 </script>
+
 
 <style scoped>
 .loading-overlay {

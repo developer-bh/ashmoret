@@ -24,12 +24,15 @@
                   <p>{{ result.SL_LocDescriptionShort }}</p>
                 </div>
               </div>
-              <div class="results-location" v-if="userLocation()">
+              <div class="results-location"
+                   v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
                 <span class="icon">
                     <img src="/images/icons/icon-location.svg" alt="Icon"/>
                 </span>
-                {{ calculateDistance(result.SL_Location).distance }}
-                {{ calculateDistance(result.SL_Location).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך' }}
+                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
+                {{
+                  calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך'
+                }}
               </div>
               <div class="results-icons" v-if="!result.SL_CH_Code">
                 <a href="`tel:${result.SL_BG_Phone}`" class="results-phone">
@@ -158,30 +161,37 @@ export default {
       const userCoordinates = localStorage.getItem("userCoordinates");
       return !!userCoordinates;
     },
-    calculateDistance(location) {
-      const userCoordinates = this.userLocation();
-      if (!userCoordinates || !location) return null;
+    calculateDistance(locLng, locLat) {
+      const userCoordinates = localStorage.getItem("userCoordinates");
+      if (!userCoordinates || locLng == null || locLat == null) return null;
 
-      const {latitude: userLat, longitude: userLng} = userCoordinates;
-      const [locLng, locLat] = location;
-
+      let {latitude: userLat, longitude: userLng} = JSON.parse(userCoordinates);
+      userLat = parseFloat(userLat);
+      userLng = parseFloat(userLng);
+      locLng = parseFloat(locLng);
+      locLat = parseFloat(locLat);
       const toRad = (value) => (value * Math.PI) / 180;
 
-      const R = 6371; // Radius of the Earth in km
+      const R = 6371; // Radius of the earth in km
       const dLat = toRad(locLat - userLat);
       const dLng = toRad(locLng - userLng);
+
       const a =
           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(toRad(userLat)) * Math.cos(toRad(locLat)) *
           Math.sin(dLng / 2) * Math.sin(dLng / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = R * c * 1000; // Convert to meters
+      const distance = (R * c * 1000).toFixed(1); // Convert to meters and round to 2 decimal places
 
-      if (distance > 900) {
-        return {distance: (distance / 1000).toFixed(1), measurement: 'kilometers'};
-      } else {
-        return {distance: Math.round(distance), measurement: 'meters'};
+      if (isNaN(distance)) {
+        return false;
       }
+
+      const result = distance > 900
+          ? {distance: Math.round(distance / 1000).toFixed(0), measurement: 'kilometers'}
+          : {distance: Math.round(distance), measurement: 'meters'};
+
+      return result;
     },
     wazeUrl(longitude, latitude) {
       return `https://www.waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
