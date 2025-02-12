@@ -6,51 +6,55 @@
         <ul uk-accordion>
           <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.id">
             <div class="uk-accordion-title flex">
-              <div class="results-percents">
-                <span class="percents">
-                    <span>
-                        <span class="symbol">%</span>
-                        {{ result.SL_DiscountTitle1 }}
-                    </span>
-                    הנחה</span>
-              </div>
-              <div class="results-logo">
-                <div class="results-bage">רשת חנויות</div>
-                <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name"/>
-              </div>
-              <div class="text">
-                <div class="results-title">{{ result.SL_Loc_Name }}</div>
-                <div class="results-text">
-                  <p>{{ result.SL_LocDescriptionShort }}</p>
+              <div class="flex">
+                <div class="results-percents">
+                  <span class="percents">
+                      <span>
+                          <span class="symbol">%</span>
+                          {{ result.SL_DiscountTitle1 }}
+                      </span>
+                      הנחה</span>
+                </div>
+                <div class="results-logo">
+                  <div class="results-bage">רשת חנויות</div>
+                  <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name"/>
+                </div>
+                <div class="text">
+                  <div class="results-title">{{ result.SL_Loc_Name }}</div>
+                  <div class="results-text">
+                    <p>{{ result.SL_LocDescriptionShort }}</p>
+                  </div>
                 </div>
               </div>
-              <div class="results-location"
-                   v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
-                <span class="icon">
-                    <img src="/images/icons/icon-location.svg" alt="Icon"/>
-                </span>
-                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                {{
-                  calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך'
-                }}
-              </div>
-              <div class="results-icons" v-if="!result.SL_CH_Code">
-                <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone">
-                                            <span class="icon">
-                                                <img src="/images/icons/icon-phone.svg" alt="Phone Icon"/>
-                                            </span>
-                </a>
-                <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze">
-                                            <span class="icon">
-                                                <img src="/images/icons/icon-waze.svg" alt="Waze Icon"/>
-                                            </span>
-                </a>
-              </div>
-              <div class="accordion">
-                                    <span class="icon">
-                                        <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
-                                        <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>
-                                    </span>
+              <div class="flex">
+                <div class="results-location"
+                    v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
+                  <span class="icon">
+                      <img src="/images/icons/icon-location.svg" alt="Icon"/>
+                  </span>
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
+                  {{
+                    calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך'
+                  }}
+                </div>
+                <div class="results-icons" v-if="!result.SL_CH_Code">
+                  <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" onclick="event.stopPropagation();">
+                                              <span class="icon">
+                                                  <img src="/images/icons/icon-phone.svg" alt="Phone Icon"/>
+                                              </span>
+                  </a>
+                  <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze" onclick="event.stopPropagation();">
+                                              <span class="icon">
+                                                  <img src="/images/icons/icon-waze.svg" alt="Waze Icon"/>
+                                              </span>
+                  </a>
+                </div>
+                <div class="accordion">
+                                      <span class="icon">
+                                          <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
+                                          <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>
+                                      </span>
+                </div>
               </div>
             </div>
             <div class="uk-accordion-content">
@@ -91,10 +95,10 @@
                           </div>
                           <div class="results-waze">
                             <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze">
+                              {{ result.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon"/>
                               </div>
-                              {{ result.SL_AddressLine }}
                             </a>
                           </div>
                         </div>
@@ -104,19 +108,19 @@
                              :key="storeLocation.SL_BG_number" @click="changeMapLocation(storeLocation)">
                           <div class="results-phone" v-if="storeLocation.SL_LocPhone">
                             <a :href="`tel:${storeLocation.SL_LocPhone}`">
+                              {{ storeLocation.SL_LocPhone }}
                               <div class="icon">
                                 <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon"/>
                               </div>
-                              {{ storeLocation.SL_LocPhone }}
                             </a>
                           </div>
                           <div class="results-waze">
                             <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)"
                                class="results-waze">
+                              {{ storeLocation.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon"/>
                               </div>
-                              {{ storeLocation.SL_AddressLine }}
                             </a>
                           </div>
                         </div>

@@ -381,11 +381,6 @@ body {
             font-size: 18px;
             font-weight: 400;
             line-height: 21.6px; }
-          .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
-            direction: ltr; }
-            .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item:hover {
-              background-color: #E0F4FF;
-              border-color: #B3E5FF; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .item {
             width: 100%;
             display: flex;
@@ -407,6 +402,10 @@ body {
               width: 45%;
               padding-right: 20px;
               text-align: right; }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website img, .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website svg,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze img,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze svg {
+                min-width: 24px; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email,
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
               width: 55%;
@@ -418,40 +417,52 @@ body {
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
               display: flex;
               justify-content: flex-end; }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze a,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone a {
+                width: 100%;
+                padding-right: 0; }
+          .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
+            direction: ltr; }
+            .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item:hover {
+              background-color: #E0F4FF;
+              border-color: #B3E5FF; }
+            .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone a {
+              display: flex;
+              justify-content: flex-end; }
 
-#modal-location .uk-modal-dialog {
+#location-modal .uk-modal-dialog {
   width: 100%;
   max-width: 420px !important;
   box-shadow: 0px 2px 50px 0px #73789580;
   border-radius: 16px;
   position: relative; }
-  #modal-location .uk-modal-dialog .modal-close {
+  #location-modal .uk-modal-dialog .modal-close {
     position: absolute;
     left: 15px;
     top: 15px; }
-    #modal-location .uk-modal-dialog .modal-close button {
+    #location-modal .uk-modal-dialog .modal-close button {
       background-color: transparent;
       padding: 0;
       border: 0;
       cursor: pointer; }
-  #modal-location .uk-modal-dialog .wrapper {
+  #location-modal .uk-modal-dialog .wrapper {
     width: 100%;
     max-width: 236px;
     margin: 0 auto; }
-    #modal-location .uk-modal-dialog .wrapper .icon {
+    #location-modal .uk-modal-dialog .wrapper .icon {
       margin-bottom: 8px; }
-    #modal-location .uk-modal-dialog .wrapper p {
+    #location-modal .uk-modal-dialog .wrapper p {
       margin-bottom: 26px;
       color: #23233A;
       font-size: 18px;
       font-weight: 400;
       line-height: 21.6px;
       text-align: center; }
-    #modal-location .uk-modal-dialog .wrapper .buttons {
+    #location-modal .uk-modal-dialog .wrapper .buttons {
       display: flex;
       justify-content: center;
       justify-content: space-between; }
-      #modal-location .uk-modal-dialog .wrapper .buttons button {
+      #location-modal .uk-modal-dialog .wrapper .buttons button {
         width: 48%;
         height: 38px;
         border: 1px solid #237DFF;
@@ -461,8 +472,8 @@ body {
         font-weight: 700;
         line-height: 25.2px;
         cursor: pointer; }
-        #modal-location .uk-modal-dialog .wrapper .buttons button.allow {
+        #location-modal .uk-modal-dialog .wrapper .buttons button.allow {
           background-color: #237DFF;
           color: white; }
-        #modal-location .uk-modal-dialog .wrapper .buttons button.decline {
+        #location-modal .uk-modal-dialog .wrapper .buttons button.decline {
           color: #237DFF; }

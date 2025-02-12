@@ -484,15 +484,6 @@ body {
                             line-height: 21.6px;
                         }
                     }
-                    .locations-wrapper {
-                        direction: ltr;
-                        .item {
-                            &:hover {
-                                background-color: #E0F4FF;
-                                border-color: #B3E5FF;
-                            }
-                        }
-                    }
                     .item {
                         width: 100%;
                         display: flex;
@@ -515,6 +506,9 @@ body {
                             width: 45%;
                             padding-right: 20px;
                             text-align: right;
+                            img, svg {
+                                min-width: 24px;
+                            }
                         }
                         .results-email,
                         .results-phone {
@@ -531,6 +525,25 @@ body {
                         .results-phone {
                             display: flex;
                             justify-content: flex-end;
+                            a {
+                                width: 100%;
+                                padding-right: 0;
+                            }
+                        }
+                    }
+                    .locations-wrapper {
+                        direction: ltr;
+                        .item {
+                            &:hover {
+                                background-color: #E0F4FF;
+                                border-color: #B3E5FF;
+                            }
+                            .results-phone {
+                                a {
+                                    display: flex;
+                                    justify-content: flex-end;
+                                }
+                            }
                         }
                     }
                 }
@@ -541,7 +554,7 @@ body {
 
 // Modal
 
-#modal-location {
+#location-modal {
     .uk-modal-dialog {
         width: 100%;
         max-width: 420px!important;
