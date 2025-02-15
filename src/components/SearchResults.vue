@@ -143,6 +143,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     results: {
@@ -157,7 +159,7 @@ export default {
   methods: {
     imageUrl(logoName) {
       if (!logoName) {
-        return '/images/logos/logo-default.png';
+        return '/images/logos/logo-default.png'; // Return default logo if no logo name is provided
       }
       return `http://www.countdown.tempurl.co.il/app/logo/${logoName}`;
     },
