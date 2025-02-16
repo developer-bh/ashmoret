@@ -120,7 +120,7 @@ export default {
   },
   methods: {
     async loadData() {
-      const csvFilePath = '/search_data.csv';
+      const csvFilePath = import.meta.env.BASE_URL + 'search_data.csv';
       Papa.parse(csvFilePath, {
         download: true,
         header: true,
