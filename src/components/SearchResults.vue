@@ -104,17 +104,20 @@
                         </div>
                       </div>
                       <div class="locations-wrapper" v-else>
-                        <div class="item" v-for="storeLocation in result.storeLocations"
-                             :key="storeLocation.SL_BG_number" @click="changeMapLocation(storeLocation)">
-                          <div class="results-phone" v-if="storeLocation.SL_LocPhone">
-                            <a :href="`tel:${storeLocation.SL_LocPhone}`">
-                              {{ storeLocation.SL_LocPhone }}
-                              <div class="icon">
-                                <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon"/>
-                              </div>
-                            </a>
-                          </div>
-                          <div class="results-waze">
+                        <div class="item"
+                             v-for="storeLocation in result.storeLocations"
+                             :key="storeLocation.SL_BG_number"
+                             :class="{ 'active': selectedLocation === storeLocation }"
+                             @click="changeMapLocation(storeLocation)">
+                            <div class="results-phone" v-if="storeLocation.SL_LocPhone">
+                              <a :href="`tel:${storeLocation.SL_LocPhone}`">
+                                {{ storeLocation.SL_LocPhone }}
+                                <div class="icon">
+                                  <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon"/>
+                                </div>
+                              </a>
+                            </div>
+                            <div class="results-waze">
                             <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)"
                                class="results-waze">
                               {{ storeLocation.SL_AddressLine }}
@@ -126,10 +129,15 @@
                         </div>
                       </div>
                     </div>
-                    <div class="results-map">
+                    <div class="results-map" v-if="!result.SL_CH_Code">
                       <iframe :src="mapUrl(result.SL_Longitude, result.SL_Latitude)" width="600" height="450"
                               style="border:0;" allowfullscreen="" loading="lazy"
                               referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="results-map" v-else @load="changeMapLocation(result.storeLocations[0])">
+                      <iframe :src="mapSrc" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                              referrerpolicy="no-referrer-when-downgrade"></iframe>
+
                     </div>
                   </div>
                 </div>
@@ -155,6 +163,12 @@ export default {
       type: Array,
       required: false
     }
+  },
+  data() {
+    return {
+      selectedLocation: null,
+      mapSrc: null, // Set default map URL
+    };
   },
   methods: {
     imageUrl(logoName) {
@@ -203,21 +217,29 @@ export default {
       return `https://www.waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
     },
     mapUrl(longitude, latitude) {
-      return `https://www.google.com/maps/embed/v1/view?key=YOUR_API_KEY&center=${latitude},${longitude}&zoom=14&maptype=roadmap`;
+      return `https://www.google.com/maps/embed/v1/view?key=AIzaSyD4StBI8c6oIX-84OPC6W7VVeQBJtxza4Y&center=${latitude},${longitude}&zoom=14&maptype=roadmap`;
     },
     goToSite(url) {
       window.open('https://' + url, "_blank");
     },
     changeMapLocation(storeLocation) {
       const {SL_Longitude, SL_Latitude} = storeLocation;
-      const mapUrl = this.mapUrl(SL_Longitude, SL_Latitude);
-      const mapFrame = this.$el.parentElement.querySelector('.results-additional iframe');
-      mapFrame.src = `${mapUrl}&timestamp=${new Date().getTime()}`;
+      this.mapSrc = this.mapUrl(SL_Longitude, SL_Latitude);
+      this.selectedLocation = storeLocation;
+      // const mapFrame = this.$el.parentElement.querySelector('.results-additional iframe');
+      // mapFrame.src = `${mapUrl}&timestamp=${new Date().getTime()}`;
     }
   }
 };
 </script>
 
 <style scoped>
-/* Add any styles if needed */
+.item {
+  cursor: pointer; /* Changes the mouse pointer */
+  transition: background 0.3s ease;
+}
+
+.item:hover, .item.active {
+  background-color: #f0f0f0;
+}
 </style>
