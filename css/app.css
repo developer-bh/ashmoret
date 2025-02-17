@@ -109,6 +109,10 @@ body {
     background-position: 6% !important;
     background-size: 24px;
     background-repeat: no-repeat !important; }
+    .search-section form select:focus {
+      color: #23233A; }
+    .search-section form select option:checked {
+      color: #23233A; }
   .search-section form .toggle-advanced {
     display: none; }
     .search-section form .toggle-advanced.show {
@@ -181,6 +185,9 @@ body {
       .results-section .card.multiple .uk-accordion-content .results-additional .info .locations-wrapper::-webkit-scrollbar-thumb {
         background-color: #237DFF;
         border-radius: 3px; }
+      .results-section .card.multiple .uk-accordion-content .results-additional .info .locations-wrapper .item:hover {
+        background-color: #E0F4FF;
+        border-color: #B3E5FF; }
     .results-section .card.uk-open .accordion img:first-child {
       display: none; }
     .results-section .card.uk-open .accordion img:nth-of-type(2) {
@@ -194,6 +201,14 @@ body {
           flex-direction: column; } }
       .results-section .card .flex:before {
         display: none; }
+      .results-section .card .flex .flex-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; }
+        .results-section .card .flex .flex-item:first-of-type {
+          width: 50%; }
+        .results-section .card .flex .flex-item:nth-of-type(2) {
+          width: 40%; }
       .results-section .card .flex .results-percents {
         min-width: 81px;
         width: 81px;
@@ -423,9 +438,6 @@ body {
                 padding-right: 0; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
             direction: ltr; }
-            .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item:hover {
-              background-color: #E0F4FF;
-              border-color: #B3E5FF; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone a {
               display: flex;
               justify-content: flex-end; }
