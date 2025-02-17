@@ -434,7 +434,7 @@ body {
               justify-content: flex-end; }
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze a,
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone a {
-                width: 100%;
+                width: fit-content;
                 padding-right: 0; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
             direction: ltr; }
