@@ -56,7 +56,7 @@
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m">
                   <div class="uk-grid uk-flex-right uk-flex-middle">
-                    <div class="uk-flex uk-flex-right uk-width-1-2">
+                    <div class="uk-flex uk-flex-right uk-width-1-2" v-if="searchResults.length > 0">
                       <button class="form-clear" @click="resetSearch">
                         <span class="icon">
                           <img src="../../images/icons/icon-clear.svg" alt="Icon" />
@@ -174,6 +174,7 @@ export default {
         document.getElementById('form-city').selectedIndex = 0;
       }
       this.searchResults = []; // Reset search results
+      window.history.pushState(null, '', window.location.pathname); // Reset URL
     },
     async getFilteredResults(url) {
       return await axios.get(url);
@@ -253,15 +254,24 @@ export default {
     },
     async processSearchResults(data) {
       const dataWithStores = [];
+      let chainStoreLocations = [];
 
       for (const item of data) {
         if (item.SL_CH_Code) {
-          const storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
-          if (storeLocations) {
-            item.storeLocations = [...storeLocations];
+          if (!chainStoreLocations[item.SL_CH_Code]) {
+
+            const storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
+
+            if (storeLocations) {
+              item.storeLocations = [...storeLocations];
+            }
+
+            chainStoreLocations[item.SL_CH_Code] = item;
+            dataWithStores.push(item);
           }
+        } else {
+          dataWithStores.push(item);
         }
-        dataWithStores.push(item);
       }
 
       return dataWithStores;
@@ -321,7 +331,7 @@ export default {
           this.performSearch(new Event('submit'));
         }
       });
-    }
+    },
   }
 };
 </script>
@@ -353,5 +363,4 @@ export default {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
 </style>

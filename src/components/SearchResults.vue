@@ -5,19 +5,20 @@
       <div class="results">
         <ul uk-accordion>
           <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.id">
-            <div class="uk-accordion-title flex">
+            <div class="uk-accordion-title flex" @click="changeMapLocation(result)">
               <div class="flex">
                 <div class="results-percents">
                   <span class="percents">
-                      <span>
-                          <span class="symbol">%</span>
-                          {{ result.SL_DiscountTitle1 }}
-                      </span>
-                      הנחה</span>
+                    <span>
+                      <span class="symbol">%</span>
+                      {{ result.SL_DiscountTitle1 }}
+                    </span>
+                    הנחה
+                  </span>
                 </div>
                 <div class="results-logo">
                   <div class="results-bage">רשת חנויות</div>
-                  <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name"/>
+                  <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name" />
                 </div>
                 <div class="text">
                   <div class="results-title">{{ result.SL_Loc_Name }}</div>
@@ -27,33 +28,30 @@
                 </div>
               </div>
               <div class="flex">
-                <div class="results-location"
-                    v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
+                <div class="results-location" v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
                   <span class="icon">
-                      <img src="/images/icons/icon-location.svg" alt="Icon"/>
+                    <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
                   {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                  {{
-                    calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך'
-                  }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך' }}
                 </div>
                 <div class="results-icons" v-if="!result.SL_CH_Code">
-                  <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" onclick="event.stopPropagation();">
-                                              <span class="icon">
-                                                  <img src="/images/icons/icon-phone.svg" alt="Phone Icon"/>
-                                              </span>
+                  <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" @click.stop>
+                    <span class="icon">
+                      <img src="/images/icons/icon-phone.svg" alt="Phone Icon" />
+                    </span>
                   </a>
-                  <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze" onclick="event.stopPropagation();">
-                                              <span class="icon">
-                                                  <img src="/images/icons/icon-waze.svg" alt="Waze Icon"/>
-                                              </span>
+                  <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze" @click.stop>
+                    <span class="icon">
+                      <img src="/images/icons/icon-waze.svg" alt="Waze Icon" />
+                    </span>
                   </a>
                 </div>
                 <div class="accordion">
-                                      <span class="icon">
-                                          <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
-                                          <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>
-                                      </span>
+                  <span class="icon">
+                    <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon" />
+                    <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -69,7 +67,7 @@
                         <div class="results-website" v-if="result.SL_Site">
                           <a :href="result.SL_Site" target="_blank" @click="goToSite(result.SL_Site)">
                             <div class="icon">
-                              <img src="/images/icons/icon-globe.svg" alt="Icon Globe"/>
+                              <img src="/images/icons/icon-globe.svg" alt="Icon Globe" />
                             </div>
                             {{ result.SL_Site }}
                           </a>
@@ -77,7 +75,7 @@
                         <div class="results-email" v-if="result.SL_email">
                           <a :href="`mailto:${result.SL_email}`">
                             <div class="icon">
-                              <img src="/images/icons/icon-mail.svg" alt="Icon Mail"/>
+                              <img src="/images/icons/icon-mail.svg" alt="Icon Mail" />
                             </div>
                             {{ result.SL_email }}
                           </a>
@@ -88,7 +86,7 @@
                           <div class="results-phone" v-if="result.SL_LocPhone">
                             <a :href="`tel:${result.SL_LocPhone}`">
                               <div class="icon">
-                                <img src="/images/icons/icon-phone-simple.svg" alt="Icon phone"/>
+                                <img src="/images/icons/icon-phone-simple.svg" alt="Icon phone" />
                               </div>
                               {{ result.SL_LocPhone }}
                             </a>
@@ -97,32 +95,28 @@
                             <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze">
                               {{ result.SL_AddressLine }}
                               <div class="icon">
-                                <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon"/>
+                                <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
                               </div>
                             </a>
                           </div>
                         </div>
                       </div>
                       <div class="locations-wrapper" v-else>
-                        <div class="item"
-                             v-for="storeLocation in result.storeLocations"
-                             :key="storeLocation.SL_BG_number"
-                             :class="{ 'active': selectedLocation === storeLocation }"
-                             @click="changeMapLocation(storeLocation)">
-                            <div class="results-phone" v-if="storeLocation.SL_LocPhone">
-                              <a :href="`tel:${storeLocation.SL_LocPhone}`">
-                                {{ storeLocation.SL_LocPhone }}
-                                <div class="icon">
-                                  <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon"/>
-                                </div>
-                              </a>
-                            </div>
-                            <div class="results-waze">
-                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)"
-                               class="results-waze">
+                        <div class="item item-location" v-for="storeLocation in result.storeLocations" :key="storeLocation.SL_BG_number" :class="{ 'active': selectedLocation === storeLocation.SL_BG_number }" @click="changeMapLocation(storeLocation)">
+                          <div class="results-phone" v-if="storeLocation.SL_LocPhone">
+                            <a :href="`tel:${storeLocation.SL_LocPhone}`">
+                              <div class="icon">
+                                <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon" />
+                              </div>
+                              {{ storeLocation.SL_LocPhone }}
+                            </a>
+                          </div>
+                          <div class="results-waze">
+                            <span v-if="userLocation() && storeLocation.SL_BG_number === result.SL_BG_number">Closest to your location</span>
+                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)" class="results-waze">
                               {{ storeLocation.SL_AddressLine }}
                               <div class="icon">
-                                <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon"/>
+                                <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
                               </div>
                             </a>
                           </div>
@@ -130,14 +124,10 @@
                       </div>
                     </div>
                     <div class="results-map" v-if="!result.SL_CH_Code">
-                      <iframe :src="mapUrl(result.SL_Longitude, result.SL_Latitude)" width="600" height="450"
-                              style="border:0;" allowfullscreen="" loading="lazy"
-                              referrerpolicy="no-referrer-when-downgrade"></iframe>
+                      <iframe :src="mapUrl(result.SL_Longitude, result.SL_Latitude)" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
-                    <div class="results-map" v-else @load="changeMapLocation(result.storeLocations[0])">
-                      <iframe :src="mapSrc" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                              referrerpolicy="no-referrer-when-downgrade"></iframe>
-
+                    <div class="results-map" v-else>
+                      <iframe :src="mapSrc" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" @load="handleIframeLoad(result)"></iframe>
                     </div>
                   </div>
                 </div>
@@ -168,14 +158,18 @@ export default {
     return {
       selectedLocation: null,
       mapSrc: null, // Set default map URL
+      iframeLoaded: false,
+      closestToLocation: null
     };
   },
   methods: {
     imageUrl(logoName) {
-      if (!logoName) {
+      if (!logoName || logoName.includes('no_logo') || logoName.includes('nologo') || logoName.includes('no-logo')) {
         return '/images/logos/logo-default.png'; // Return default logo if no logo name is provided
       }
-      return `http://www.countdown.tempurl.co.il/app/logo/${logoName}`;
+
+      const logoUrl = `http://www.countdown.tempurl.co.il/app/logo/${logoName}`;
+      return logoUrl;
     },
     userLocation() {
       const userCoordinates = localStorage.getItem("userCoordinates");
@@ -185,7 +179,7 @@ export default {
       const userCoordinates = localStorage.getItem("userCoordinates");
       if (!userCoordinates || locLng == null || locLat == null) return null;
 
-      let {latitude: userLat, longitude: userLng} = JSON.parse(userCoordinates);
+      let { latitude: userLat, longitude: userLng } = JSON.parse(userCoordinates);
       userLat = parseFloat(userLat);
       userLng = parseFloat(userLng);
       locLng = parseFloat(locLng);
@@ -208,8 +202,8 @@ export default {
       }
 
       const result = distance > 900
-          ? {distance: Math.round(distance / 1000).toFixed(0), measurement: 'kilometers'}
-          : {distance: Math.round(distance), measurement: 'meters'};
+          ? { distance: Math.round(distance / 1000).toFixed(0), measurement: 'kilometers' }
+          : { distance: Math.round(distance), measurement: 'meters' };
 
       return result;
     },
@@ -220,26 +214,36 @@ export default {
       return `https://www.google.com/maps/embed/v1/view?key=AIzaSyD4StBI8c6oIX-84OPC6W7VVeQBJtxza4Y&center=${latitude},${longitude}&zoom=14&maptype=roadmap`;
     },
     goToSite(url) {
-      window.open('https://' + url, "_blank");
+      if (!/^(https?|http):\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      window.open(url, "_blank");
     },
     changeMapLocation(storeLocation) {
-      const {SL_Longitude, SL_Latitude} = storeLocation;
+      const SL_Longitude = storeLocation.SL_Longitude;
+      const SL_Latitude = storeLocation.SL_Latitude;
+
       this.mapSrc = this.mapUrl(SL_Longitude, SL_Latitude);
-      this.selectedLocation = storeLocation;
-      // const mapFrame = this.$el.parentElement.querySelector('.results-additional iframe');
-      // mapFrame.src = `${mapUrl}&timestamp=${new Date().getTime()}`;
+      this.selectedLocation = storeLocation.SL_BG_number;
+    },
+    handleIframeLoad(location) {
+      if (!this.iframeLoaded || this.iframeLoaded !== location.SL_BG_number) {
+        this.changeMapLocation(location);
+        this.selectedLocation = location.SL_BG_number;
+        this.iframeLoaded = location.SL_BG_number;
+      }
     }
   }
 };
 </script>
 
 <style scoped>
-.item {
+.item-location {
   cursor: pointer; /* Changes the mouse pointer */
   transition: background 0.3s ease;
 }
 
-.item:hover, .item.active {
-  background-color: #f0f0f0;
+.item-location:hover, .item-location.active {
+  background-color: rgba(83, 91, 242, 0.35);
 }
 </style>
