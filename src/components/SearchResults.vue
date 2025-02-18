@@ -130,7 +130,7 @@
                       <iframe :src="mapUrl(result.SL_Longitude, result.SL_Latitude)" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                     <div class="results-map" v-else>
-                      <iframe :src="mapSrc" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" @load="handleIframeLoad(result)"></iframe>
+                      <iframe :src="mapSrc" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                   </div>
                 </div>
@@ -229,13 +229,6 @@ export default {
 
       this.mapSrc = this.mapUrl(SL_Longitude, SL_Latitude);
       this.selectedLocation = storeLocation.SL_BG_number;
-    },
-    handleIframeLoad(location) {
-      // if (!this.iframeLoaded || this.iframeLoaded !== location.SL_BG_number) {
-        this.changeMapLocation(location);
-        this.selectedLocation = location.SL_BG_number;
-        this.iframeLoaded = location.SL_BG_number;
-      // }
     }
   }
 };
