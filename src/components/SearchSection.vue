@@ -61,7 +61,7 @@
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m">
                   <div class="uk-grid uk-flex-right uk-flex-middle">
-                    <div class="uk-flex uk-flex-right uk-width-1-2" v-if="searchResults.length > 0">
+                    <div class="uk-flex uk-flex-right uk-width-1-2" v-if="filter !== null">
                       <button class="form-clear" @click="resetSearch">
                         <span class="icon">
                           <img src="../../images/icons/icon-clear.svg" alt="Icon"/>
@@ -94,20 +94,49 @@
     </div>
   </div>
   <SearchResults :results="searchResults"/>
-  <NoResultModal ref="noResultModal" :message="noResultMessage"/>
+
+  <div>
+    <div id="no-result-modal" class="default-modal" ref="noResultModal" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+        <div class="modal-close">
+          <button class="uk-modal-close" type="button" @click="closeModal">
+            <img src="/images/icons/icon-modal-close.svg" alt="Icon" />
+          </button>
+        </div>
+        <div class="wrapper">
+          <div class="uk-text-center">
+            <div class="icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="emptyDataName === 'NoResultModal'">
+                <circle cx="24" cy="24" r="24" fill="#FFE5EF"/>
+                <path d="M27.7071 26.2929C27.3166 25.9024 26.6834 25.9024 26.2929 26.2929C25.9024 26.6834 25.9024 27.3166 26.2929 27.7071L27.7071 26.2929ZM32.2929 33.7071C32.6834 34.0976 33.3166 34.0976 33.7071 33.7071C34.0976 33.3166 34.0976 32.6834 33.7071 32.2929L32.2929 33.7071ZM22 28C18.6863 28 16 25.3137 16 22H14C14 26.4183 17.5817 30 22 30V28ZM16 22C16 18.6863 18.6863 16 22 16V14C17.5817 14 14 17.5817 14 22H16ZM22 16C25.3137 16 28 18.6863 28 22H30C30 17.5817 26.4183 14 22 14V16ZM28 22C28 25.3137 25.3137 28 22 28V30C26.4183 30 30 26.4183 30 22H28ZM26.2929 27.7071L32.2929 33.7071L33.7071 32.2929L27.7071 26.2929L26.2929 27.7071Z" fill="#7D3673"/>
+                <path d="M20.5858 19.1716C20.1953 18.781 19.5621 18.781 19.1716 19.1716C18.781 19.5621 18.781 20.1953 19.1716 20.5858L20.5858 19.1716ZM23.4142 24.8284C23.8047 25.2189 24.4379 25.2189 24.8284 24.8284C25.219 24.4379 25.219 23.8047 24.8284 23.4142L23.4142 24.8284ZM24.8284 20.5858C25.219 20.1953 25.219 19.5621 24.8284 19.1716C24.4379 18.781 23.8047 18.781 23.4142 19.1716L24.8284 20.5858ZM19.1716 23.4142C18.781 23.8047 18.781 24.4379 19.1716 24.8284C19.5621 25.2189 20.1953 25.2189 20.5858 24.8284L19.1716 23.4142ZM19.1716 20.5858L23.4142 24.8284L24.8284 23.4142L20.5858 19.1716L19.1716 20.5858ZM23.4142 19.1716L19.1716 23.4142L20.5858 24.8284L24.8284 20.5858L23.4142 19.1716Z" fill="#7D3673"/>
+              </svg>
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="emptyDataName === 'NoParametersModal'">
+                <circle cx="24" cy="24" r="24" fill="#FFE5EF"/>
+                <path d="M24.0498 27.45H25.0498C25.0498 26.8977 24.6021 26.45 24.0498 26.45V27.45ZM24.0498 27.55L24.0496 28.55C24.3148 28.55 24.5692 28.4447 24.7568 28.2571C24.9444 28.0696 25.0498 27.8152 25.0498 27.55H24.0498ZM23.9502 27.5499H22.9502C22.9502 28.1021 23.3978 28.5498 23.9499 28.5499L23.9502 27.5499ZM23.9502 27.45V26.45C23.3979 26.45 22.9502 26.8977 22.9502 27.45H23.9502ZM25 20.45C25 19.8977 24.5523 19.45 24 19.45C23.4477 19.45 23 19.8977 23 20.45H25ZM23 24.45C23 25.0022 23.4477 25.45 24 25.45C24.5523 25.45 25 25.0022 25 24.45H23ZM24 32C19.5817 32 16 28.4183 16 24H14C14 29.5228 18.4772 34 24 34V32ZM16 24C16 19.5817 19.5817 16 24 16V14C18.4772 14 14 18.4772 14 24H16ZM24 16C28.4183 16 32 19.5817 32 24H34C34 18.4772 29.5228 14 24 14V16ZM32 24C32 28.4183 28.4183 32 24 32V34C29.5228 34 34 29.5228 34 24H32ZM23.0498 27.45V27.55H25.0498V27.45H23.0498ZM24.0501 26.55L23.9504 26.5499L23.9499 28.5499L24.0496 28.55L24.0501 26.55ZM24.9502 27.5499V27.45H22.9502V27.5499H24.9502ZM23.9502 28.45H24.0498V26.45H23.9502V28.45ZM23 20.45V24.45H25V20.45H23Z" fill="#7D3673"/>
+              </svg>
+            </div>
+            <p>{{ emptyDataMessage }}</p>
+            <div class="buttons">
+              <button class="uk-modal-close allow" type="button" @click="closeModal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 
 <script>
 import axios from 'axios';
 import Papa from 'papaparse';
-import SearchResults from './SearchResults.vue'; // Ensure the correct path
-import NoResultModal from './NoResultModal.vue';
+import SearchResults from './SearchResults.vue';
+import UIkit from "uikit"; // Ensure the correct path
 
 export default {
   components: {
-    SearchResults,
-    NoResultModal
+    SearchResults
   },
   data() {
     return {
@@ -117,10 +146,12 @@ export default {
       cities: [],
       isAdvancedSearchVisible: false,
       searchResults: [], // Add searchResults to the data object,
+      filter: null,
       isLoading: false,
       userLocation: null,
       locationPermissionDenied: null,
-      noResultMessage: '',
+      emptyDataMessage: '',
+      emptyDataName: '',
     };
   },
   mounted() {
@@ -128,9 +159,11 @@ export default {
     this.setFormFieldsFromUrl();
   },
   methods: {
-    showNoResultModal(message) {
-      this.noResultMessage = message;
-      this.$refs.noResultModal.show();
+    showEmptyDataModal(name, message) {
+      this.emptyDataName = name;
+      this.emptyDataMessage = message;
+      const modal = UIkit.modal(this.$refs.noResultModal);
+      modal.show();
     },
     async loadData() {
       const csvFilePath = import.meta.env.BASE_URL + 'search_data.csv';
@@ -230,9 +263,10 @@ export default {
         // Remove filter if it's empty
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
         const urlParams = new URLSearchParams(window.location.search);
+        this.filter = filterString;
+
         if (filterString == null && !urlParams.toString()) {
-          // alert("Please provide at least one search criteria.");
-          this.showNoResultModal('Please provide at least one search criteria.');
+          this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפןש');
           this.isLoading = false; // Hide loading
           return;
         }
@@ -258,14 +292,13 @@ export default {
 
         const response = await this.getFilteredResults(url);
         const data = response.data.data;
-        if (data.length === 0) {
-          this.showNoResultModal('מצטערים, לא מצאנו את הפריט שחיפשת');
+        if (!data || data.length === 0) {
+          this.showEmptyDataModal('NoResultModal', 'מצטערים, לא מצאנו את הפריט שחיפשת');
           this.isLoading = false;
           return;
         }
         this.searchResults = await this.processSearchResults(data);
 
-        // this.searchResults = response.data.data;
       } catch (error) {
         console.error("Error performing search:", error);
       } finally {
@@ -332,9 +365,10 @@ export default {
         if (businessGroup) document.getElementById('form-category').value = businessGroup;
 
         const locCity = urlParams.get('SL_LocCity');
-        if (locCity) {
-          this.isAdvancedSearchVisible = true;
+        if (locCity && document.getElementById('form-city') !== null) {
+
           document.getElementById('form-city').value = locCity;
+          this.isAdvancedSearchVisible = true;
         }
 
         const businessType = urlParams.get('SL_BusinessType');

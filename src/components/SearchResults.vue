@@ -5,7 +5,7 @@
       <div class="results">
         <ul uk-accordion>
           <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.id">
-            <div class="uk-accordion-title flex">
+            <div class="uk-accordion-title flex" @click="changeMapLocation(result)">
               <div class="flex-item">
                 <div class="results-percents">
                   <span class="percents">
@@ -223,6 +223,7 @@ export default {
       window.open(url, "_blank");
     },
     changeMapLocation(storeLocation) {
+      this.mapSrc = null;
       const SL_Longitude = storeLocation.SL_Longitude;
       const SL_Latitude = storeLocation.SL_Latitude;
 
@@ -230,11 +231,11 @@ export default {
       this.selectedLocation = storeLocation.SL_BG_number;
     },
     handleIframeLoad(location) {
-      if (!this.iframeLoaded || this.iframeLoaded !== location.SL_BG_number) {
+      // if (!this.iframeLoaded || this.iframeLoaded !== location.SL_BG_number) {
         this.changeMapLocation(location);
         this.selectedLocation = location.SL_BG_number;
         this.iframeLoaded = location.SL_BG_number;
-      }
+      // }
     }
   }
 };
