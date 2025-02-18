@@ -259,7 +259,7 @@ export default {
         const response = await this.getFilteredResults(url);
         const data = response.data.data;
         if (data.length === 0) {
-          this.showNoResultModal('No results found for your search');
+          this.showNoResultModal('מצטערים, לא מצאנו את הפריט שחיפשת');
           this.isLoading = false;
           return;
         }

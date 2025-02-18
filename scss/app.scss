@@ -133,14 +133,6 @@ body {
             background-position: 6%!important;
             background-size: 24px;
             background-repeat: no-repeat!important;
-            &:focus {
-                color: #23233A;
-            }
-            option {
-                &:checked {
-                    color: #23233A;
-                }
-            }
         }
         .toggle-advanced {
             display: none;
@@ -242,12 +234,6 @@ body {
                             &::-webkit-scrollbar-thumb {
                                 background-color: #237DFF;
                                 border-radius: 3px;
-                            }
-                            .item {
-                                &:hover {
-                                    background-color: #E0F4FF;
-                                    border-color: #B3E5FF;
-                                }
                             }
                         }
                     }
@@ -518,6 +504,14 @@ body {
                         border-top: 1px solid #F6F8FF;
                         border-bottom: 1px solid #F6F8FF;
                         transition: .3s;
+                        &.item-location {
+                            cursor: pointer;
+                            transition: background 0.3s ease;
+                            &.active {
+                                background-color: #E0F4FF;
+                                padding-top: 24px;
+                            }
+                        }
                         a {
                             display: flex;
                             gap: 10px;
@@ -555,6 +549,19 @@ body {
                                 padding-right: 0;
                             }
                         }
+                        .results-waze {
+                            flex-wrap: wrap;
+                            span {
+                                margin-top: -15px;
+                                width: 100%;
+                                color: #237DFF;
+                                font-weight: 400;
+                                font-size: 12px;
+                                line-height: 14.4px;
+                                letter-spacing: 0%;
+                                text-transform: uppercase;
+                            }
+                        }
                     }
                     .locations-wrapper {
                         direction: ltr;
@@ -575,7 +582,7 @@ body {
 
 // Modal
 
-#location-modal {
+.default-modal {
     .uk-modal-dialog {
         width: 100%;
         max-width: 420px!important;
@@ -613,6 +620,7 @@ body {
                 justify-content: center;
                 justify-content: space-between;
                 button {
+                    margin: 0 auto;
                     width: 48%;
                     height: 38px;
                     border: 1px solid #237DFF;

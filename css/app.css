@@ -109,10 +109,6 @@ body {
     background-position: 6% !important;
     background-size: 24px;
     background-repeat: no-repeat !important; }
-    .search-section form select:focus {
-      color: #23233A; }
-    .search-section form select option:checked {
-      color: #23233A; }
   .search-section form .toggle-advanced {
     display: none; }
     .search-section form .toggle-advanced.show {
@@ -185,9 +181,6 @@ body {
       .results-section .card.multiple .uk-accordion-content .results-additional .info .locations-wrapper::-webkit-scrollbar-thumb {
         background-color: #237DFF;
         border-radius: 3px; }
-      .results-section .card.multiple .uk-accordion-content .results-additional .info .locations-wrapper .item:hover {
-        background-color: #E0F4FF;
-        border-color: #B3E5FF; }
     .results-section .card.uk-open .accordion img:first-child {
       display: none; }
     .results-section .card.uk-open .accordion img:nth-of-type(2) {
@@ -405,6 +398,12 @@ body {
             border-top: 1px solid #F6F8FF;
             border-bottom: 1px solid #F6F8FF;
             transition: .3s; }
+            .results-section .uk-accordion-content .results-additional .info .info-flex .item.item-location {
+              cursor: pointer;
+              transition: background 0.3s ease; }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item.item-location.active {
+                background-color: #E0F4FF;
+                padding-top: 24px; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item a {
               display: flex;
               gap: 10px;
@@ -436,45 +435,57 @@ body {
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone a {
                 width: fit-content;
                 padding-right: 0; }
+            .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze {
+              flex-wrap: wrap; }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze span {
+                margin-top: -15px;
+                width: 100%;
+                color: #237DFF;
+                font-weight: 400;
+                font-size: 12px;
+                line-height: 14.4px;
+                letter-spacing: 0%;
+                text-transform: uppercase; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
             direction: ltr; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone a {
               display: flex;
               justify-content: flex-end; }
 
-#location-modal .uk-modal-dialog {
+.default-modal .uk-modal-dialog {
   width: 100%;
   max-width: 420px !important;
   box-shadow: 0px 2px 50px 0px #73789580;
   border-radius: 16px;
   position: relative; }
-  #location-modal .uk-modal-dialog .modal-close {
+  .default-modal .uk-modal-dialog .modal-close {
     position: absolute;
     left: 15px;
     top: 15px; }
-    #location-modal .uk-modal-dialog .modal-close button {
+    .default-modal .uk-modal-dialog .modal-close button {
       background-color: transparent;
       padding: 0;
       border: 0;
       cursor: pointer; }
-  #location-modal .uk-modal-dialog .wrapper {
+  .default-modal .uk-modal-dialog .wrapper {
     width: 100%;
     max-width: 236px;
     margin: 0 auto; }
-    #location-modal .uk-modal-dialog .wrapper .icon {
+    .default-modal .uk-modal-dialog .wrapper .icon {
       margin-bottom: 8px; }
-    #location-modal .uk-modal-dialog .wrapper p {
+    .default-modal .uk-modal-dialog .wrapper p {
       margin-bottom: 26px;
       color: #23233A;
       font-size: 18px;
       font-weight: 400;
       line-height: 21.6px;
       text-align: center; }
-    #location-modal .uk-modal-dialog .wrapper .buttons {
+    .default-modal .uk-modal-dialog .wrapper .buttons {
       display: flex;
       justify-content: center;
       justify-content: space-between; }
-      #location-modal .uk-modal-dialog .wrapper .buttons button {
+      .default-modal .uk-modal-dialog .wrapper .buttons button {
+        margin: 0 auto;
         width: 48%;
         height: 38px;
         border: 1px solid #237DFF;
@@ -484,8 +495,8 @@ body {
         font-weight: 700;
         line-height: 25.2px;
         cursor: pointer; }
-        #location-modal .uk-modal-dialog .wrapper .buttons button.allow {
+        .default-modal .uk-modal-dialog .wrapper .buttons button.allow {
           background-color: #237DFF;
           color: white; }
-        #location-modal .uk-modal-dialog .wrapper .buttons button.decline {
+        .default-modal .uk-modal-dialog .wrapper .buttons button.decline {
           color: #237DFF; }

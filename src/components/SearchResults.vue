@@ -95,7 +95,7 @@
                             </a>
                           </div>
                           <div class="results-waze">
-                            <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze">
+                            <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)">
                               {{ result.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
@@ -116,7 +116,7 @@
                           </div>
                           <div class="results-waze">
                             <span v-if="userLocation() && storeLocation.SL_BG_number === result.SL_BG_number">Closest to your location</span>
-                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)" class="results-waze">
+                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)">
                               {{ storeLocation.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
@@ -239,14 +239,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.item-location {
-  cursor: pointer; /* Changes the mouse pointer */
-  transition: background 0.3s ease;
-}
-
-.item-location:hover, .item-location.active {
-  background-color: rgba(83, 91, 242, 0.35);
-}
-</style>
