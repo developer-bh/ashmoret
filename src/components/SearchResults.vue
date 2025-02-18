@@ -5,8 +5,8 @@
       <div class="results">
         <ul uk-accordion>
           <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.id">
-            <div class="uk-accordion-title flex" @click="changeMapLocation(result)">
-              <div class="flex">
+            <div class="uk-accordion-title flex">
+              <div class="flex-item">
                 <div class="results-percents">
                   <span class="percents">
                     <span>
@@ -27,8 +27,9 @@
                   </div>
                 </div>
               </div>
-              <div class="flex">
-                <div class="results-location" v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
+              <div class="flex-item">
+                <div class="results-location"
+                    v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
                   <span class="icon">
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
@@ -47,11 +48,13 @@
                     </span>
                   </a>
                 </div>
-                <div class="accordion">
-                  <span class="icon">
-                    <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon" />
-                    <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon" />
-                  </span>
+              </div>
+              <div class="flex-item">
+                              <div class="accordion">
+                                      <span class="icon">
+                                          <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
+                                          <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>
+                                      </span>
                 </div>
               </div>
             </div>

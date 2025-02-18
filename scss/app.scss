@@ -133,6 +133,14 @@ body {
             background-position: 6%!important;
             background-size: 24px;
             background-repeat: no-repeat!important;
+            &:focus {
+                color: #23233A;
+            }
+            option {
+                &:checked {
+                    color: #23233A;
+                }
+            }
         }
         .toggle-advanced {
             display: none;
@@ -235,6 +243,12 @@ body {
                                 background-color: #237DFF;
                                 border-radius: 3px;
                             }
+                            .item {
+                                &:hover {
+                                    background-color: #E0F4FF;
+                                    border-color: #B3E5FF;
+                                }
+                            }
                         }
                     }
                 }
@@ -261,6 +275,17 @@ body {
             }
             &:before {
                 display: none;
+            }
+            .flex-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                &:first-of-type {
+                    width: 50%;
+                }
+                &:nth-of-type(2) {
+                    width: 40%;
+                }
             }
             .results-percents {
                 min-width: 81px;
@@ -526,7 +551,7 @@ body {
                             display: flex;
                             justify-content: flex-end;
                             a {
-                                width: 100%;
+                                width: fit-content;
                                 padding-right: 0;
                             }
                         }
@@ -534,10 +559,6 @@ body {
                     .locations-wrapper {
                         direction: ltr;
                         .item {
-                            &:hover {
-                                background-color: #E0F4FF;
-                                border-color: #B3E5FF;
-                            }
                             .results-phone {
                                 a {
                                     display: flex;
