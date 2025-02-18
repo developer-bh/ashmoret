@@ -10,14 +10,10 @@
         </div>
         <div class="wrapper">
           <div class="uk-text-center">
-            <div class="icon">
-              <img src="/images/icons/icon-modal-location.svg" alt="Icon" />
-            </div>
+            <p>{{ message }}</p>
           </div>
-          <p>We need your location to provide better services. Do you agree to share your location?</p>
           <div class="buttons">
-            <button class="uk-modal-close allow" type="button" @click="shareno-result">Allow</button>
-            <button class="uk-modal-close decline" type="button" @click="closeModal">Decline</button>
+            <button class="uk-modal-close" type="button">Ok</button>
           </div>
         </div>
       </div>
@@ -31,6 +27,26 @@ import Icons from 'uikit/dist/js/uikit-icons';
 
 UIkit.use(Icons);
 
+export default {
+  name: 'NoResultModal',
+  props: {
+    message: {
+      type: String,
+      default: 'No data found'
+    }
+  },
+  methods: {
+    show() {
+      // Ensure the modal element exists before showing it
+      const modal = document.getElementById('no-result-modal');
+      if (modal) {
+        UIkit.modal(modal).show();
+      } else {
+        console.error('Modal element not found');
+      }
+    }
+  }
+};
 </script>
 
 <style scoped>

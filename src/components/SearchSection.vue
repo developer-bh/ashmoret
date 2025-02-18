@@ -5,7 +5,7 @@
   </div>
   <div class="search-section">
     <div class="bg">
-      <img src="../../images/bg-search.svg" alt="Background" />
+      <img src="../../images/bg-search.svg" alt="Background"/>
     </div>
     <div class="uk-container">
       <div class="uk-grid uk-child-width-expand@s" uk-grid>
@@ -14,7 +14,7 @@
             <form>
               <div class="uk-grid uk-grid-small" uk-grid>
                 <div class="uk-width-1-1 uk-width-1-2@m">
-                  <input class="uk-input" type="search" placeholder="Free search" id="form-search" />
+                  <input class="uk-input" type="search" placeholder="Free search" id="form-search"/>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-4@m">
                   <select class="uk-select form-area" id="form-area">
@@ -25,13 +25,18 @@
                 <div class="uk-width-1-1 uk-width-1-4@m">
                   <select class="uk-select form-category" id="form-category">
                     <option value="" disabled selected>Category</option>
-                    <option v-for="category in categories" :key="category.id" :value="category.name">{{ category.name }}</option>
+                    <option v-for="category in categories" :key="category.id" :value="category.name">{{
+                        category.name
+                      }}
+                    </option>
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
                   <select class="uk-select form-subcategory" id="form-subcategory">
                     <option value="" disabled selected>Subcategory</option>
-                    <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.name">{{ subcategory.name }}</option>
+                    <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.name">
+                      {{ subcategory.name }}
+                    </option>
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
@@ -45,8 +50,8 @@
                 <div class="uk-width-1-1 uk-width-1-2@m uk-flex uk-flex-middle">
                   <button class="form-advanced" @click="toggleAdvancedSearch" type="button">
                     <span class="icon">
-                      <img v-if="!isAdvancedSearchVisible" src="../../images/icons/icon-plus.svg" alt="Icon" />
-                      <img v-else src="../../images/icons/icon-minus.svg" alt="Icon" />
+                      <img v-if="!isAdvancedSearchVisible" src="../../images/icons/icon-plus.svg" alt="Icon"/>
+                      <img v-else src="../../images/icons/icon-minus.svg" alt="Icon"/>
                     </span>
                     <span>
                       <span v-if="!isAdvancedSearchVisible">Advanced search</span>
@@ -59,10 +64,10 @@
                     <div class="uk-flex uk-flex-right uk-width-1-2" v-if="searchResults.length > 0">
                       <button class="form-clear" @click="resetSearch">
                         <span class="icon">
-                          <img src="../../images/icons/icon-clear.svg" alt="Icon" />
+                          <img src="../../images/icons/icon-clear.svg" alt="Icon"/>
                         </span>
-                      Clear search
-                    </button>
+                        Clear search
+                      </button>
                     </div>
                     <div class="uk-width-1-1 uk-width-1-2@m uk-padding-remove">
                       <button class="uk-button-primary form-search" @click="performSearch">
@@ -79,7 +84,7 @@
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
             <a href="#/" class="action-audience">
               <span class="icon">
-                <img src="../../images/icons/icon-star.svg" alt="Icon" />
+                <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
               Audience choice
             </a>
@@ -89,6 +94,7 @@
     </div>
   </div>
   <SearchResults :results="searchResults"/>
+  <NoResultModal ref="noResultModal" :message="noResultMessage"/>
 </template>
 
 
@@ -96,10 +102,12 @@
 import axios from 'axios';
 import Papa from 'papaparse';
 import SearchResults from './SearchResults.vue'; // Ensure the correct path
+import NoResultModal from './NoResultModal.vue';
 
 export default {
   components: {
-    SearchResults
+    SearchResults,
+    NoResultModal
   },
   data() {
     return {
@@ -111,7 +119,8 @@ export default {
       searchResults: [], // Add searchResults to the data object,
       isLoading: false,
       userLocation: null,
-      locationPermissionDenied: null
+      locationPermissionDenied: null,
+      noResultMessage: '',
     };
   },
   mounted() {
@@ -119,6 +128,10 @@ export default {
     this.setFormFieldsFromUrl();
   },
   methods: {
+    showNoResultModal(message) {
+      this.noResultMessage = message;
+      this.$refs.noResultModal.show();
+    },
     async loadData() {
       const csvFilePath = import.meta.env.BASE_URL + 'search_data.csv';
       Papa.parse(csvFilePath, {
@@ -160,10 +173,10 @@ export default {
         }
       });
 
-      this.categories = Array.from(categoriesSet).map((name, index) => ({ id: index + 1, name }));
-      this.subcategories = Array.from(subcategoriesSet).map((name, index) => ({ id: index + 1, name }));
-      this.cities = Array.from(citiesSet).map((name, index) => ({ id: index + 1, name }));
-      this.areas = Array.from(areasSet).map((name, index) => ({ id: index + 1, name }));
+      this.categories = Array.from(categoriesSet).map((name, index) => ({id: index + 1, name}));
+      this.subcategories = Array.from(subcategoriesSet).map((name, index) => ({id: index + 1, name}));
+      this.cities = Array.from(citiesSet).map((name, index) => ({id: index + 1, name}));
+      this.areas = Array.from(areasSet).map((name, index) => ({id: index + 1, name}));
     },
     resetSearch() {
       document.getElementById('form-search').value = '';
@@ -210,15 +223,16 @@ export default {
 
         // Add user location if permission is granted
         if (this.userLocation && this.locationPermissionDenied === undefined) {
-          const { latitude, longitude } = JSON.parse(this.userLocation);
+          const {latitude, longitude} = JSON.parse(this.userLocation);
           filter.SL_location = [longitude, latitude];
         }
 
         // Remove filter if it's empty
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
         const urlParams = new URLSearchParams(window.location.search);
-       if (filterString == null && !urlParams.toString()) {
-          alert("Please provide at least one search criteria.");
+        if (filterString == null && !urlParams.toString()) {
+          // alert("Please provide at least one search criteria.");
+          this.showNoResultModal('Please provide at least one search criteria.');
           this.isLoading = false; // Hide loading
           return;
         }
@@ -244,7 +258,13 @@ export default {
 
         const response = await this.getFilteredResults(url);
         const data = response.data.data;
+        if (data.length === 0) {
+          this.showNoResultModal('No results found for your search');
+          this.isLoading = false;
+          return;
+        }
         this.searchResults = await this.processSearchResults(data);
+
         // this.searchResults = response.data.data;
       } catch (error) {
         console.error("Error performing search:", error);
@@ -281,7 +301,7 @@ export default {
         let filter = {};
 
         if (this.userLocation && this.locationPermissionDenied === undefined) {
-          const { latitude, longitude } = JSON.parse(this.userLocation);
+          const {latitude, longitude} = JSON.parse(this.userLocation);
           filter.SL_location = [longitude, latitude];
         }
         filter.SL_Loc_Name = SL_Loc_Name;
@@ -359,8 +379,13 @@ export default {
   height: 20px;
   animation: spin 2s linear infinite;
 }
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
