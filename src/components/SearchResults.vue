@@ -91,10 +91,10 @@
                         <div class="item">
                           <div class="results-phone" v-if="result.SL_LocPhone">
                             <a :href="`tel:${result.SL_LocPhone}`">
+                              {{ result.SL_LocPhone }}
                               <div class="icon">
                                 <img src="/images/icons/icon-phone-simple.svg" alt="Icon phone" />
                               </div>
-                              {{ result.SL_LocPhone }}
                             </a>
                           </div>
                           <div class="results-waze">
@@ -112,10 +112,10 @@
                         <div class="item item-location" v-for="storeLocation in result.storeLocations" :key="storeLocation.SL_BG_number" :class="{ 'active': selectedLocation === storeLocation.SL_BG_number }" @click="changeMapLocation(storeLocation)">
                           <div class="results-phone" v-if="storeLocation.SL_LocPhone">
                             <a :href="`tel:${storeLocation.SL_LocPhone}`">
+                              {{ storeLocation.SL_LocPhone }}
                               <div class="icon">
                                 <img src="/images/icons/icon-phone-simple.svg" alt="Phone Icon" />
                               </div>
-                              {{ storeLocation.SL_LocPhone }}
                             </a>
                           </div>
                           <div class="results-waze">

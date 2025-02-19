@@ -154,6 +154,17 @@ body {
             line-height: 25.2px;
             cursor: pointer;
         }
+        .search-wrapper {
+            @media screen and (max-width: 992px) {
+                display: flex;
+                flex-direction: column-reverse;
+                .uk-flex {
+                    width: 100%;
+                    margin-top: 20px;
+                    justify-content: flex-start;
+                }
+            }
+        }
         .form-search {
             display: flex;
             align-items: center;
@@ -268,9 +279,15 @@ body {
                 justify-content: space-between;
                 &:first-of-type {
                     width: 50%;
+                    @media only screen and (max-width: 768px) {
+                        width: 100%;
+                    }
                 }
                 &:nth-of-type(2) {
                     width: 40%;
+                    @media only screen and (max-width: 768px) {
+                        width: 100%;
+                    }
                 }
             }
             .results-percents {
@@ -306,6 +323,9 @@ body {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                background-image: url('../images/img-default.svg');
+                background-repeat: no-repeat;
+                background-size: cover;
                 margin-left: 26px;
                 width: 108px;
                 min-width: 108px;

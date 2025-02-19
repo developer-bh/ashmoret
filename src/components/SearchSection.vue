@@ -6,6 +6,7 @@
   <div class="search-section">
     <div class="bg">
       <img src="../../images/bg-search.svg" alt="Background"/>
+      <img src="../../images/bg-search-mobile.svg" alt="Background"/>
     </div>
     <div class="uk-container">
       <div class="uk-grid uk-child-width-expand@s" uk-grid>
@@ -14,17 +15,17 @@
             <form>
               <div class="uk-grid uk-grid-small" uk-grid>
                 <div class="uk-width-1-1 uk-width-1-2@m">
-                  <input class="uk-input" type="search" placeholder="Free search" id="form-search"/>
+                  <input class="uk-input" type="search" placeholder="חיפוש חופשי" id="form-search"/>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-4@m">
                   <select class="uk-select form-area" id="form-area">
-                    <option value="" disabled selected>Area</option>
+                    <option value="" disabled selected>אזור</option>
                     <option v-for="area in areas" :key="area.id" :value="area.name">{{ area.name }}</option>
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-4@m">
                   <select class="uk-select form-category" id="form-category">
-                    <option value="" disabled selected>Category</option>
+                    <option value="" disabled selected>סיווג</option>
                     <option v-for="category in categories" :key="category.id" :value="category.name">{{
                         category.name
                       }}
@@ -33,7 +34,7 @@
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
                   <select class="uk-select form-subcategory" id="form-subcategory">
-                    <option value="" disabled selected>Subcategory</option>
+                    <option value="" disabled selected>תת-סיווג</option>
                     <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.name">
                       {{ subcategory.name }}
                     </option>
@@ -41,7 +42,7 @@
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
                   <select class="uk-select form-city" id="form-city">
-                    <option value="" disabled selected>City</option>
+                    <option value="" disabled selected>יישוב</option>
                     <option v-for="city in cities" :key="city.id" :value="city.name">{{ city.name }}</option>
                   </select>
                 </div>
@@ -54,24 +55,24 @@
                       <img v-else src="../../images/icons/icon-minus.svg" alt="Icon"/>
                     </span>
                     <span>
-                      <span v-if="!isAdvancedSearchVisible">Advanced search</span>
-                      <span v-else>Hide Advanced search</span>
+                      <span v-if="!isAdvancedSearchVisible">חיפוש מתקדם</span>
+                      <span v-else>חיפוש מתקדם</span>
                     </span>
                   </button>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m">
-                  <div class="uk-grid uk-flex-right uk-flex-middle">
+                  <div class="uk-grid uk-flex-right uk-flex-middle search-wrapper">
                     <div class="uk-flex uk-flex-right uk-width-1-2" v-if="filter !== null">
                       <button class="form-clear" @click="resetSearch">
                         <span class="icon">
                           <img src="../../images/icons/icon-clear.svg" alt="Icon"/>
                         </span>
-                        Clear search
+                        נקה חיפוש
                       </button>
                     </div>
                     <div class="uk-width-1-1 uk-width-1-2@m uk-padding-remove">
                       <button class="uk-button-primary form-search" @click="performSearch">
-                        Search
+                        חיפוש
                       </button>
                     </div>
                   </div>
@@ -86,7 +87,7 @@
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
-              Audience choice
+              בחירת העורכת
             </a>
           </div>
         </div>

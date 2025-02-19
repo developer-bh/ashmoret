@@ -126,6 +126,14 @@ body {
     font-weight: 700;
     line-height: 25.2px;
     cursor: pointer; }
+  @media screen and (max-width: 992px) {
+    .search-section form .search-wrapper {
+      display: flex;
+      flex-direction: column-reverse; }
+      .search-section form .search-wrapper .uk-flex {
+        width: 100%;
+        margin-top: 20px;
+        justify-content: flex-start; } }
   .search-section form .form-search {
     display: flex;
     align-items: center;
@@ -200,8 +208,14 @@ body {
         justify-content: space-between; }
         .results-section .card .flex .flex-item:first-of-type {
           width: 50%; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .flex-item:first-of-type {
+              width: 100%; } }
         .results-section .card .flex .flex-item:nth-of-type(2) {
           width: 40%; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .flex-item:nth-of-type(2) {
+              width: 100%; } }
       .results-section .card .flex .results-percents {
         min-width: 81px;
         width: 81px;
@@ -231,6 +245,9 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
+        background-image: url("../images/img-default.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
         margin-left: 26px;
         width: 108px;
         min-width: 108px;
