@@ -42,7 +42,10 @@
                       <img src="/images/icons/icon-phone.svg" alt="Phone Icon" />
                     </span>
                   </a>
-                  <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)" class="results-waze" @click.stop>
+                  <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)"
+                     target="_blank"
+                     class="results-waze"
+                     @click.stop>
                     <span class="icon">
                       <img src="/images/icons/icon-waze.svg" alt="Waze Icon" />
                     </span>
@@ -95,7 +98,8 @@
                             </a>
                           </div>
                           <div class="results-waze">
-                            <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)">
+                            <a :href="wazeUrl(result.SL_Longitude, result.SL_Latitude)"
+                               target="_blank">
                               {{ result.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
@@ -116,7 +120,8 @@
                           </div>
                           <div class="results-waze">
                             <span v-if="userLocation() && storeLocation.SL_BG_number === result.SL_BG_number">Closest to your location</span>
-                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)">
+                            <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)"
+                               target="_blank">
                               {{ storeLocation.SL_AddressLine }}
                               <div class="icon">
                                 <img src="/images/icons/icon-waze-simple.svg" alt="Waze Icon" />
