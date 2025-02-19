@@ -255,7 +255,7 @@ export default {
         if (freeText) filter.freeText = freeText;
 
         // Add user location if permission is granted
-        if (this.userLocation && this.locationPermissionDenied === undefined) {
+        if (this.userLocation) {
           const {latitude, longitude} = JSON.parse(this.userLocation);
           filter.SL_location = [longitude, latitude];
         }
@@ -282,7 +282,7 @@ export default {
 
         if (filterString) queryParams.append("filter", filterString);
 
-        if (this.locationPermissionDenied && JSON.parse(this.locationPermissionDenied)) {
+        if (!this.userLocation) {
           queryParams.append("SL_BGNumberGroupOrder", "1");
         }
 
@@ -298,7 +298,6 @@ export default {
           return;
         }
         this.searchResults = await this.processSearchResults(data);
-
       } catch (error) {
         console.error("Error performing search:", error);
       } finally {
@@ -307,21 +306,22 @@ export default {
     },
     async processSearchResults(data) {
       const dataWithStores = [];
-      let chainStoreLocations = [];
+      const chainStoreLocations = new Set();
 
       for (const item of data) {
         if (item.SL_CH_Code) {
-          if (!chainStoreLocations[item.SL_CH_Code]) {
+          let storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
 
-            const storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
+          //Sort storeLocations so the first item has the same SL_BG_number as item
+          storeLocations.sort((a, b) => {
+            if (a.SL_BG_number === item.SL_BG_number) return -1;
+            if (b.SL_BG_number === item.SL_BG_number) return 1;
+            return 0;
+          });
 
-            if (storeLocations) {
-              item.storeLocations = [...storeLocations];
-            }
-
-            chainStoreLocations[item.SL_CH_Code] = item;
-            dataWithStores.push(item);
-          }
+          item.storeLocations = storeLocations;
+          chainStoreLocations.add(item.SL_CH_Code);
+          dataWithStores.push(item);
         } else {
           dataWithStores.push(item);
         }
@@ -332,21 +332,26 @@ export default {
     async searchChainStoreLocation(SL_Loc_Name) {
       try {
         let filter = {};
+        filter.SL_Loc_Name = SL_Loc_Name;
 
-        if (this.userLocation && this.locationPermissionDenied === undefined) {
+        if (this.userLocation) {
           const {latitude, longitude} = JSON.parse(this.userLocation);
           filter.SL_location = [longitude, latitude];
         }
-        filter.SL_Loc_Name = SL_Loc_Name;
-        const filterString = JSON.stringify(filter);
 
+        const filterString = JSON.stringify(filter);
         const queryParams = new URLSearchParams();
         queryParams.append("format", "json");
         queryParams.append("filter", filterString);
         queryParams.append("iid", "673f39ed0630441602677413");
 
+        if (!this.userLocation) {
+          queryParams.append("SL_BGNumberGroupOrder", "1");
+        }
+
         const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
         const url = `${baseUrl}?${queryParams.toString()}`;
+
         const response = await axios.get(url);
         return response.data.data;
       } catch (error) {

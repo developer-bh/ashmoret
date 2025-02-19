@@ -4,7 +4,7 @@
     <div class="uk-container">
       <div class="results">
         <ul uk-accordion>
-          <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.id">
+          <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.SL_BG_number" :data-id="result.SL_BG_number">
             <div class="uk-accordion-title flex" @click="changeMapLocation(result)">
               <div class="flex-item">
                 <div class="results-percents">
