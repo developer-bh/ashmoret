@@ -283,7 +283,7 @@ export default {
         if (filterString) queryParams.append("filter", filterString);
 
         if (!this.userLocation) {
-          queryParams.append("SL_BGNumberGroupOrder", "1");
+          queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
         // Construct the final URL
@@ -346,7 +346,7 @@ export default {
         queryParams.append("iid", "673f39ed0630441602677413");
 
         if (!this.userLocation) {
-          queryParams.append("SL_BGNumberGroupOrder", "1");
+          queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
         const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
