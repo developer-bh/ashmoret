@@ -34,7 +34,7 @@
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
                   {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'קילומטרים ממך' : 'מטרים ממך' }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטר ממך' : 'קילומטרים ממך') }}
                 </div>
                 <div class="results-icons" v-if="!result.SL_CH_Code">
                   <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" @click.stop>
@@ -173,7 +173,7 @@ export default {
   methods: {
     imageUrl(logoName) {
       if (!logoName || logoName.includes('no_logo') || logoName.includes('nologo') || logoName.includes('no-logo')) {
-        return '/images/logos/logo-default.png'; // Return default logo if no logo name is provided
+        return import.meta.env.BASE_URL + 'images/logos/logo-default.png'; // Return default logo if no logo name is provided
       }
 
       const logoUrl = `http://www.countdown.tempurl.co.il/app/logo/${logoName}`;
@@ -210,7 +210,7 @@ export default {
       }
 
       const result = distance > 900
-          ? { distance: Math.round(distance / 1000).toFixed(0), measurement: 'kilometers' }
+          ? { distance: Math.round(distance / 1000).toFixed(0), measurement: Math.round(distance / 1000) === 1 ? 'kilometer' : 'kilometers' }
           : { distance: Math.round(distance), measurement: 'meters' };
 
       return result;
@@ -219,7 +219,7 @@ export default {
       return `https://www.waze.com/ul?ll=${latitude},${longitude}&navigate=yes`;
     },
     mapUrl(longitude, latitude) {
-      return `https://www.google.com/maps/embed/v1/view?key=AIzaSyD4StBI8c6oIX-84OPC6W7VVeQBJtxza4Y&center=${latitude},${longitude}&zoom=14&maptype=roadmap`;
+      return `https://www.google.com/maps/embed/v1/place?key=AIzaSyD4StBI8c6oIX-84OPC6W7VVeQBJtxza4Y&q=${latitude},${longitude}&zoom=14&maptype=roadmap`;
     },
     goToSite(url) {
       if (!/^(https?|http):\/\//i.test(url)) {

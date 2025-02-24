@@ -212,7 +212,8 @@ export default {
       this.cities = Array.from(citiesSet).map((name, index) => ({id: index + 1, name}));
       this.areas = Array.from(areasSet).map((name, index) => ({id: index + 1, name}));
     },
-    resetSearch() {
+    resetSearch(event) {
+      event.preventDefault();
       document.getElementById('form-search').value = '';
       document.getElementById('form-area').selectedIndex = 0;
       document.getElementById('form-category').selectedIndex = 0;
@@ -221,7 +222,8 @@ export default {
         document.getElementById('form-city').selectedIndex = 0;
       }
       this.searchResults = []; // Reset search results
-      window.history.pushState(null, '', window.location.pathname); // Reset URL
+      window.history.pushState({}, document.title, window.location.pathname); // Reset URL
+      this.filter = null;
     },
     async getFilteredResults(url) {
       return await axios.get(url);
@@ -233,7 +235,8 @@ export default {
 
       try {
         this.userLocation = localStorage.getItem("userCoordinates") ?? null;
-        this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
+        // this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
+        this.locationPermissionDenied = this.getItemWithExpiry("locationPermissionDenied");
 
         let filter = {};
 
@@ -255,6 +258,12 @@ export default {
         const freeText = document.getElementById("form-search")?.value;
         if (freeText) filter.freeText = freeText;
 
+        if (Object.keys(filter).length === 0) {
+          this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפןש');
+          this.isLoading = false; // Hide loading
+          return;
+        }
+
         // Add user location if permission is granted
         if (this.userLocation) {
           const {latitude, longitude} = JSON.parse(this.userLocation);
@@ -265,12 +274,6 @@ export default {
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
         const urlParams = new URLSearchParams(window.location.search);
         this.filter = filterString;
-
-        if (filterString == null && !urlParams.toString()) {
-          this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפןש');
-          this.isLoading = false; // Hide loading
-          return;
-        }
 
         // Update URL with search parameters
         const searchParams = new URLSearchParams(filter).toString();
@@ -310,7 +313,7 @@ export default {
       const chainStoreLocations = new Set();
 
       for (const item of data) {
-        if (item.SL_CH_Code) {
+        if (item.SL_CH_Code && !chainStoreLocations.has(item.SL_CH_Code)) {
           let storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
 
           //Sort storeLocations so the first item has the same SL_BG_number as item
@@ -323,7 +326,7 @@ export default {
           item.storeLocations = storeLocations;
           chainStoreLocations.add(item.SL_CH_Code);
           dataWithStores.push(item);
-        } else {
+        } else if (!item.SL_CH_Code) {
           dataWithStores.push(item);
         }
       }
@@ -392,6 +395,19 @@ export default {
         }
       });
     },
+    getItemWithExpiry(key) {
+      const itemStr = localStorage.getItem(key);
+      if (!itemStr) {
+        return null;
+      }
+      const item = JSON.parse(itemStr);
+      const now = new Date();
+      if (now.getTime() > item.expiry) {
+        localStorage.removeItem(key);
+        return null;
+      }
+      return item.value;
+    }
   }
 };
 </script>
