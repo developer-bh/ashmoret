@@ -25,11 +25,13 @@ body {
 // search section
 
 .search-section {
+    min-height: 330px;
     padding: 56px 0;
     position: relative;
     overflow: hidden;
     z-index: 1;
     @media screen and (max-width: 768px) {
+        min-height: 631px;
         padding: 28px 0;
     }
     .bg {
