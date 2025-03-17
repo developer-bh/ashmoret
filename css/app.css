@@ -16,15 +16,13 @@ body {
           padding-left: 0; } }
 
 .search-section {
-  min-height: 240px;
-  padding: 56px 0;
+  padding: 50px 0;
   position: relative;
   overflow: hidden;
   z-index: 1; }
   @media screen and (max-width: 768px) {
     .search-section {
-      min-height: 631px;
-      padding: 28px 0; } }
+      padding: 25px 0; } }
   .search-section .bg {
     position: absolute;
     top: 0;

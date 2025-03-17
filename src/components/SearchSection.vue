@@ -87,7 +87,7 @@
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
-              בחירת העורכת
+              המומלצים
             </a>
           </div>
         </div>
@@ -119,7 +119,7 @@
             </div>
             <p>{{ emptyDataMessage }}</p>
             <div class="buttons">
-              <button class="uk-modal-close allow" type="button" @click="closeModal">Close</button>
+              <button class="uk-modal-close allow" type="button" @click="closeModal">סגור</button>
             </div>
           </div>
         </div>
@@ -259,7 +259,7 @@ export default {
         if (freeText) filter.freeText = freeText;
 
         if (Object.keys(filter).length === 0) {
-          this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפןש');
+          this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפוש');
           this.isLoading = false; // Hide loading
           return;
         }
