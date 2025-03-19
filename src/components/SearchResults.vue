@@ -34,7 +34,7 @@
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
                   {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטר ממך' : 'קילומטרים ממך') }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטר ממך' : 'קילומטרים') }}
                 </div>
                 <div class="results-icons" v-if="!result.SL_CH_Code">
                   <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" @click.stop>
@@ -176,7 +176,7 @@ export default {
         return import.meta.env.BASE_URL + 'images/logos/logo-default.png'; // Return default logo if no logo name is provided
       }
 
-      const logoUrl = `http://www.countdown.tempurl.co.il/app/logo/${logoName}`;
+      const logoUrl = `https://clubs.linkc.co.il/uploads/Logos/${logoName}`;
       return logoUrl;
     },
     userLocation() {
