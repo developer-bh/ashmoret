@@ -163,8 +163,14 @@ export default {
     showEmptyDataModal(name, message) {
       this.emptyDataName = name;
       this.emptyDataMessage = message;
-      const modal = UIkit.modal(this.$refs.noResultModal);
-      modal.show();
+      let localUikit = UIkit
+      // console.log();
+      if (this.$refs.noResultModal) {
+        const modal = localUikit.modal(this.$refs.noResultModal);
+        modal.show();
+      } else {
+        console.error("Modal reference is not available.");
+      }
     },
     async loadData() {
       const csvFilePath = import.meta.env.BASE_URL + 'search_data.csv';
@@ -407,7 +413,12 @@ export default {
         return null;
       }
       return item.value;
-    }
+    },
+    handleKeydown(event) {
+      if (event.key === 'Enter') {
+        this.performSearch(event);
+      }
+    },
   }
 };
 </script>
