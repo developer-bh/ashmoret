@@ -158,6 +158,7 @@ export default {
   mounted() {
     this.loadData();
     this.setFormFieldsFromUrl();
+    this.loadPromotedItemsOnPageLoad();
   },
   methods: {
     showEmptyDataModal(name, message) {
@@ -241,7 +242,6 @@ export default {
 
       try {
         this.userLocation = localStorage.getItem("userCoordinates") ?? null;
-        // this.locationPermissionDenied = localStorage.getItem("locationPermissionDenied");
         this.locationPermissionDenied = this.getItemWithExpiry("locationPermissionDenied");
 
         let filter = {};
@@ -270,18 +270,11 @@ export default {
           return;
         }
 
-        // Add user location if permission is granted
-        if (this.userLocation) {
-          const {latitude, longitude} = JSON.parse(this.userLocation);
-          filter.SL_location = [longitude, latitude];
-        }
-
         // Remove filter if it's empty
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
-        const urlParams = new URLSearchParams(window.location.search);
         this.filter = filterString;
 
-        // Update URL with search parameters
+        // Update URL with search parameters, excluding user location
         const searchParams = new URLSearchParams(filter).toString();
         window.history.pushState(null, '', `?${searchParams}`);
 
@@ -319,26 +312,42 @@ export default {
       const chainStoreLocations = new Set();
 
       for (const item of data) {
-        if (item.SL_CH_Code && !chainStoreLocations.has(item.SL_CH_Code)) {
-          let storeLocations = await this.searchChainStoreLocation(item.SL_Loc_Name);
+        const chCode = item.SL_CH_Code ?? -1;
 
-          //Sort storeLocations so the first item has the same SL_BG_number as item
-          storeLocations.sort((a, b) => {
-            if (a.SL_BG_number === item.SL_BG_number) return -1;
-            if (b.SL_BG_number === item.SL_BG_number) return 1;
-            return 0;
-          });
-
-          item.storeLocations = storeLocations;
-          chainStoreLocations.add(item.SL_CH_Code);
+        if (chCode >= 0 && !chainStoreLocations.has(chCode)) {
+          item.storeLocations = [item];
+          chainStoreLocations.add(chCode);
           dataWithStores.push(item);
-        } else if (!item.SL_CH_Code) {
+        } else if (chCode >= 0) {
+          const itemIndex = dataWithStores.findIndex(indexItem => indexItem.SL_CH_Code === chCode);
+          if (itemIndex >= 0) {
+            dataWithStores[itemIndex].storeLocations.push(item);
+          } else {
+            item.storeLocations = [item];
+            dataWithStores.push(item);
+          }
+        } else {
           dataWithStores.push(item);
         }
       }
 
-      return dataWithStores;
+      dataWithStores.sort((a, b) => {
+        if (a.storeLocations && b.storeLocations) {
+          return b.storeLocations.length - a.storeLocations.length;
+        }
+        return 0;
+      });
+
+      const promotedItems = dataWithStores.filter(item => item.isPromoted === 1);
+      const nonPromotedItems = dataWithStores.filter(item => item.isPromoted !== 1);
+
+      // Combine promoted items at the beginning of the list
+      const sortedDataWithStores = [...promotedItems, ...nonPromotedItems];
+
+
+      return sortedDataWithStores;
     },
+    // not used anymore, but wait for the next steps
     async searchChainStoreLocation(SL_Loc_Name) {
       try {
         let filter = {};
@@ -417,6 +426,32 @@ export default {
     handleKeydown(event) {
       if (event.key === 'Enter') {
         this.performSearch(event);
+      }
+    },
+    async loadPromotedItemsOnPageLoad() {
+      try {
+        this.userLocation = localStorage.getItem("userCoordinates") ?? null;
+        let queryParams = new URLSearchParams();
+        queryParams.append("format", "json");
+        queryParams.append("iid", "673f39ed0630441602677413");
+
+        if (this.userLocation) {
+          const { latitude, longitude } = JSON.parse(this.userLocation);
+          queryParams.append("location", JSON.stringify([longitude, latitude]));
+        }
+
+        const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
+        const url = `${baseUrl}?${queryParams.toString()}`;
+
+        const response = await axios.get(url);
+        const data = response.data.data;
+
+        if (data && data.length > 0) {
+          const promotedItems = data.filter(item => item.isPromoted === 1).slice(0, 5);
+          this.searchResults = promotedItems;
+        }
+      } catch (error) {
+        console.error("Error loading promoted items on page load:", error);
       }
     },
   }
