@@ -331,13 +331,6 @@ export default {
         }
       }
 
-      dataWithStores.sort((a, b) => {
-        if (a.storeLocations && b.storeLocations) {
-          return b.storeLocations.length - a.storeLocations.length;
-        }
-        return 0;
-      });
-
       const promotedItems = dataWithStores.filter(item => item.isPromoted === 1);
       const nonPromotedItems = dataWithStores.filter(item => item.isPromoted !== 1);
 
