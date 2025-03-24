@@ -83,7 +83,7 @@
         </div>
         <div class="uk-width-1-1 uk-width-1-4@m custom-1-4">
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
-            <a href="#/" class="action-audience">
+            <a href="#/" class="action-audience" @click.prevent="showPromotedItems">
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
@@ -440,12 +440,16 @@ export default {
         const data = response.data.data;
 
         if (data && data.length > 0) {
-          const promotedItems = data.filter(item => item.isPromoted === 1).slice(0, 5);
+          const promotedItems = data.filter(item => item.isPromoted == 1).slice(0, 5);
           this.searchResults = promotedItems;
         }
       } catch (error) {
         console.error("Error loading promoted items on page load:", error);
       }
+    },
+    showPromotedItems() {
+      const promotedItems = this.searchResults.filter(item => item.isPromoted === 1).slice(0, 5);
+      this.searchResults = promotedItems;
     },
   }
 };
