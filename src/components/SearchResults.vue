@@ -21,10 +21,12 @@
                   <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name" />
                 </div>
                 <div class="text">
-                  <div v-if="result.amountOfChainStore" class="amount-of-chain-store">
-                    {{ result.amountOfChainStore }} {{ result.amountOfChainStore === 1 ? 'store' : 'stores' }}
+                  <div class="results-title">
+                    {{ result.SL_Loc_Name }}
+                    <div v-if="result.amountOfChainStore" class="amount-of-chain-store">
+                      ( <span class="chain-span">NEW</span> {{ result.amountOfChainStore }} {{ result.amountOfChainStore === 1 ? '+ store' : '+ stores' }})
+                    </div>
                   </div>
-                  <div class="results-title">{{ result.SL_Loc_Name }}</div>
                   <div class="results-text">
                     <p>{{ result.SL_LocDescriptionShort }}</p>
                   </div>

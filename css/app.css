@@ -78,7 +78,7 @@ body {
     line-height: 25.2px; }
     @media screen and (max-width: 768px) {
       .search-section .action-audience {
-        min-height: 52px;
+        min-height: 41px;
         flex-direction: row;
         gap: 12px; } }
   @media screen and (max-width: 992px) {
@@ -107,7 +107,7 @@ body {
     background-repeat: no-repeat; }
   .search-section form select {
     background-image: url("../images/icons/icon-chevron.svg") !important;
-    background-position: 6% !important;
+    background-position: 15px !important;
     background-size: 24px;
     background-repeat: no-repeat !important; }
   .search-section form .toggle-advanced {
@@ -246,9 +246,7 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
-        background-image: url("../images/img-default.svg");
-        background-repeat: no-repeat;
-        background-size: cover;
+        background-color: white;
         margin-left: 26px;
         width: 108px;
         min-width: 108px;
@@ -287,10 +285,33 @@ body {
           .results-section .card .flex .text {
             max-width: 250px;
             margin-left: 15px; } }
+        .results-section .card .flex .text .amount-of-chain-store {
+          display: inline-flex;
+          gap: 5px;
+          color: #B4B6BE;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 100%;
+          letter-spacing: 0%; }
+          .results-section .card .flex .text .amount-of-chain-store .chain-span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 19px;
+            padding: 0 5px;
+            border-radius: 50px;
+            background-color: #B4B6BE;
+            color: white;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 100%;
+            letter-spacing: 5%;
+            text-align: right;
+            text-transform: uppercase; }
         .results-section .card .flex .text .results-title {
           display: inline-flex;
           flex-wrap: wrap;
-          align-items: center;
+          align-items: baseline;
           gap: 8px;
           margin-bottom: 2px;
           color: #23233A;
