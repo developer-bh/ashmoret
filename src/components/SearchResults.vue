@@ -125,7 +125,7 @@
                             </a>
                           </div>
                           <div class="results-waze">
-                            <span v-if="userLocation() && storeLocation.SL_BG_number === result.SL_BG_number">Closest to your location</span>
+                            <span v-if="userLocation() && storeLocation.SL_BG_number === result.SL_BG_number">הסניף הקרוב ביותר</span>
                             <a :href="wazeUrl(storeLocation.SL_Longitude, storeLocation.SL_Latitude)"
                                target="_blank">
                               {{ storeLocation.SL_AddressLine }}
