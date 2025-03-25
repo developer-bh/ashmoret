@@ -12,19 +12,19 @@
       <div class="uk-grid uk-child-width-expand@s" uk-grid>
         <div class="uk-width-1-1 uk-width-3-4@m custom-3-4">
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
-            <form>
+            <form @submit.prevent="performSearch">
               <div class="uk-grid uk-grid-small" uk-grid>
                 <div class="uk-width-1-1 uk-width-1-2@m">
-                  <input class="uk-input" type="search" placeholder="חיפוש חופשי" id="form-search"/>
+                  <input class="uk-input" type="search" @keydown.enter.prevent="performSearch" placeholder="חיפוש חופשי" id="form-search"/>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-4@m">
-                  <select class="uk-select form-area" id="form-area">
+                  <select class="uk-select form-area" id="form-area" @keydown.enter.prevent="performSearch">
                     <option value="" disabled selected>אזור</option>
                     <option v-for="area in areas" :key="area.id" :value="area.name">{{ area.name }}</option>
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-4@m">
-                  <select class="uk-select form-category" id="form-category">
+                  <select class="uk-select form-category" id="form-category" @keydown.enter.prevent="performSearch">
                     <option value="" disabled selected>סיווג</option>
                     <option v-for="category in categories" :key="category.id" :value="category.name">{{
                         category.name
@@ -33,7 +33,7 @@
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
-                  <select class="uk-select form-subcategory" id="form-subcategory">
+                  <select class="uk-select form-subcategory" id="form-subcategory" @keydown.enter.prevent="performSearch">
                     <option value="" disabled selected>תת-סיווג</option>
                     <option v-for="subcategory in subcategories" :key="subcategory.id" :value="subcategory.name">
                       {{ subcategory.name }}
@@ -41,7 +41,7 @@
                   </select>
                 </div>
                 <div class="uk-width-1-1 uk-width-1-2@m" v-if="isAdvancedSearchVisible">
-                  <select class="uk-select form-city" id="form-city">
+                  <select class="uk-select form-city" id="form-city" @keydown.enter.prevent="performSearch">
                     <option value="" disabled selected>יישוב</option>
                     <option v-for="city in cities" :key="city.id" :value="city.name">{{ city.name }}</option>
                   </select>
@@ -71,7 +71,7 @@
                       </button>
                     </div>
                     <div class="uk-width-1-1 uk-width-1-2@m uk-padding-remove">
-                      <button class="uk-button-primary form-search" @click="performSearch">
+                      <button class="uk-button-primary form-search" type="submit">
                         חיפוש
                       </button>
                     </div>
@@ -169,6 +169,7 @@ export default {
       if (this.$refs.noResultModal) {
         const modal = localUikit.modal(this.$refs.noResultModal);
         modal.show();
+        this.searchResults = [];
       } else {
         console.error("Modal reference is not available.");
       }
@@ -237,7 +238,6 @@ export default {
     },
     async performSearch(event) {
       event.preventDefault();
-
       this.isLoading = true; // Show loading
 
       try {
@@ -309,22 +309,21 @@ export default {
     },
     async processSearchResults(data) {
       const dataWithStores = [];
-      const chainStoreLocations = new Set();
+      const chainStoreLocations =  new Map();
 
       for (const item of data) {
         const chCode = item.SL_CH_Code ?? -1;
 
-        if (chCode >= 0 && !chainStoreLocations.has(chCode)) {
-          item.storeLocations = [item];
-          chainStoreLocations.add(chCode);
-          dataWithStores.push(item);
-        } else if (chCode >= 0) {
-          const itemIndex = dataWithStores.findIndex(indexItem => indexItem.SL_CH_Code === chCode);
-          if (itemIndex >= 0) {
-            dataWithStores[itemIndex].storeLocations.push(item);
-          } else {
+        if (chCode > 0) {
+          if (!chainStoreLocations.has(chCode)) {
             item.storeLocations = [item];
+            item.amountOfChainStore = 1;
+            chainStoreLocations.set(chCode, item);
             dataWithStores.push(item);
+          } else {
+            const existingItem = chainStoreLocations.get(chCode);
+            existingItem.storeLocations.push(item);
+            existingItem.amountOfChainStore = existingItem.storeLocations.length;
           }
         } else {
           dataWithStores.push(item);
@@ -448,8 +447,11 @@ export default {
       }
     },
     showPromotedItems() {
-      const promotedItems = this.searchResults.filter(item => item.isPromoted === 1).slice(0, 5);
-      this.searchResults = promotedItems;
+      if (this.searchResults.length === 0) {
+        this.loadPromotedItemsOnPageLoad();
+      } else  {
+        this.searchResults = this.searchResults.filter(item => item.isPromoted === 1);
+      }
     },
   }
 };

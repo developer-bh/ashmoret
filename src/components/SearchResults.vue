@@ -21,9 +21,15 @@
                   <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name" />
                 </div>
                 <div class="text">
+                  <div v-if="result.amountOfChainStore" class="amount-of-chain-store">
+                    {{ result.amountOfChainStore }} {{ result.amountOfChainStore === 1 ? 'store' : 'stores' }}
+                  </div>
                   <div class="results-title">{{ result.SL_Loc_Name }}</div>
                   <div class="results-text">
                     <p>{{ result.SL_LocDescriptionShort }}</p>
+                  </div>
+                  <div v-if="result.isPromoted" class="is-promoted">
+                    {{ result.isPromoted === 1 ? 'promoted' : '' }}
                   </div>
                 </div>
               </div>
