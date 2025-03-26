@@ -455,8 +455,36 @@ export default {
         const data = response.data.data;
 
         if (data && data.length > 0) {
-          const promotedItems = data.filter(item => item.isPromoted == 1).slice(0, 5);
-          this.searchResults = promotedItems;
+          const dataWithStores = [];
+          const chainStoreLocations = new Map();
+          const now = new Date();
+          for (const item of data) {
+            const chCode = item.SL_CH_Code ?? -1;
+            const createTime = new Date(item.SL_CreateTime);
+            const hoursDifference = Math.floor((now - createTime) / (1000 * 60 * 60));
+
+            if (chCode > 0) {
+              if (!chainStoreLocations.has(chCode)) {
+                item.storeLocations = [item];
+                item.amountOfNewChainStores = hoursDifference < 24 ? 1 : 0;
+                item.amountOfChainStore = hoursDifference >= 24 ? 1 : 0;
+                chainStoreLocations.set(chCode, item);
+                dataWithStores.push(item);
+              } else {
+                const existingItem = chainStoreLocations.get(chCode);
+                existingItem.storeLocations.push(item);
+                if (hoursDifference < 24) {
+                  existingItem.amountOfNewChainStores = (existingItem.amountOfNewChainStores || 0) + 1;
+                } else {
+                  existingItem.amountOfChainStore = (existingItem.amountOfChainStore || 0) + 1;
+                }
+              }
+            } else {
+              dataWithStores.push(item);
+            }
+            const promotedItems = dataWithStores.slice(0, 5);
+            this.searchResults = promotedItems;
+          }
         }
       } catch (error) {
         console.error("Error loading promoted items on page load:", error);
