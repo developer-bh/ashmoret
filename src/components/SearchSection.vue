@@ -316,10 +316,7 @@ export default {
       for (const item of data) {
         const chCode = item.SL_CH_Code ?? -1;
         const createTime = new Date(item.SL_CreateTime);
-        console.log(createTime)
-
         const hoursDifference = Math.floor((now - createTime) / (1000 * 60 * 60));
-        console.log(hoursDifference)
 
         if (chCode > 0) {
           if (!chainStoreLocations.has(chCode)) {
