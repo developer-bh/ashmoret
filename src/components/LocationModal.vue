@@ -13,11 +13,23 @@ UIkit.use(Icons);
 export default {
   mounted() {
     this.requestLocation();
+
+    // Re-run location request every 12 hours
+    setInterval(() => {
+      this.requestLocation();
+    }, 12 * 60 * 60 * 1000);
   },
   methods: {
     requestLocation() {
+      const userCoordinates = this.getItemWithExpiry('userCoordinates');
+
+      if (userCoordinates) {
+        console.log('Using cached coordinates:', userCoordinates);
+        return;
+      }
+
       if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser. Please enable location services in your browser settings.');
+        console.warn('Geolocation is not supported by your browser.');
         this.setItemWithExpiry('locationPermissionDenied', true);
         return;
       }
@@ -26,22 +38,25 @@ export default {
           (position) => {
             const { latitude, longitude } = position.coords;
             console.log('User coordinates:', latitude, longitude);
-            localStorage.setItem('userCoordinates', JSON.stringify({ latitude, longitude }));
+            this.setItemWithExpiry('userCoordinates', { latitude, longitude });
           },
           (error) => {
             if (error.code === error.PERMISSION_DENIED) {
-              alert('Permission to access location was denied. Please enable location services in your browser settings.');
+              console.warn('Permission to access location was denied.');
               this.setItemWithExpiry('locationPermissionDenied', true);
-              localStorage.removeItem('userCoordinates');
+
+              // Remove stored coordinates only if they existed
+              if (localStorage.getItem('userCoordinates')) {
+                localStorage.removeItem('userCoordinates');
+              }
             } else {
               console.error('Error getting location:', error);
               this.setItemWithExpiry('locationPermissionDenied', true);
-              localStorage.removeItem('userCoordinates');
             }
           }
       );
     },
-    setItemWithExpiry(key, value, ttl = 12 * 60 * 60 * 1000) { // Default ttl to 12 hours in milliseconds
+    setItemWithExpiry(key, value, ttl = 12 * 60 * 60 * 1000) {
       const now = new Date();
       const item = {
         value: value,

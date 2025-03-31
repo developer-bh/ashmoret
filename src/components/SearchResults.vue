@@ -19,20 +19,19 @@
                 </div>
                 <div class="results-logo">
                   <div class="results-bage">רשת חנויות</div>
-                  <img :src="imageUrl(result.SL_LogoName)" :alt="result.SL_Loc_Name" />
+                  <img :src="imageUrl(result.SL_LogoName)"/>
                 </div>
                 <div class="text">
                   <div class="results-title">
                     {{ result.SL_Loc_Name }}
                     <div v-if="result.amountOfChainStore" class="amount-of-chain-store">
-                      ( <span class="chain-span">NEW</span> {{ result.amountOfChainStore }} {{ result.amountOfChainStore === 1 ? '+ store' : '+ stores' }})
+                      ( <span v-if="result.amountOfNewChainStores" class="chain-span">NEW</span> {{result.amountOfNewChainStores > 0 ? (result.amountOfNewChainStores + ' + ') : ''}} {{ result.amountOfChainStore }} {{ result.amountOfChainStore === 1 ? ' חנות' : ' חנויות' }}  )
                     </div>
                   </div>
                   <div class="results-text">
                     <p>{{ result.SL_LocDescriptionShort }}</p>
                   </div>
                   <div v-if="result.isPromoted" class="is-promoted">
-                    {{ result.isPromoted === 1 ? 'promoted' : '' }}
                   </div>
                 </div>
               </div>
