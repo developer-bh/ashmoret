@@ -14,6 +14,7 @@
                       {{ result.SL_DiscountTitle1 }}
                     </span>
                     הנחה
+                    <span class="discount-info">במעמד החיוב</span>
                   </span>
                 </div>
                 <div class="results-logo">
