@@ -19,7 +19,7 @@
                 </div>
                 <div class="results-logo">
                   <div class="results-bage">רשת חנויות</div>
-                  <img :src="imageUrl(result.SL_LogoName)"/>
+                  <SafeImage :src="result.SL_LogoName"/>
                 </div>
                 <div class="text">
                   <div class="results-title">
@@ -158,8 +158,10 @@
 
 <script>
 import axios from 'axios';
+import SafeImage from './SafeImage.vue';
 
 export default {
+  components: {SafeImage},
   props: {
     results: {
       type: Array,
@@ -179,14 +181,6 @@ export default {
     };
   },
   methods: {
-    imageUrl(logoName) {
-      if (!logoName || logoName.includes('no_logo') || logoName.includes('nologo') || logoName.includes('no-logo')) {
-        return import.meta.env.BASE_URL + 'images/logos/logo-default.png'; // Return default logo if no logo name is provided
-      }
-
-      const logoUrl = `https://clubs.linkc.co.il/uploads/Logos/${logoName}`;
-      return logoUrl;
-    },
     userLocation() {
       const userCoordinates = localStorage.getItem("userCoordinates");
       return !!userCoordinates;
