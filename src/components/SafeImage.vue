@@ -8,7 +8,7 @@ export default {
     src: String,
     fallbackSrc: {
       type: String,
-      default: import.meta.env.BASE_URL + 'images/logos/logo-default.png'
+      default: './images/logos/logo-default.png'
     },
   },
   data() {
@@ -22,8 +22,7 @@ export default {
     },
     imageUrl(logoName) {
       if (!logoName || logoName.includes('no_logo') || logoName.includes('nologo') || logoName.includes('no-logo')) {
-        console.log(import.meta.env.BASE_URL + 'images/logos/logo-default.png');
-        return import.meta.env.BASE_URL + 'images/logos/logo-default.png'; // Return default logo if no logo name is provided
+        return './images/logos/logo-default.png'
       }
 
       return `https://clubs.linkc.co.il/uploads/Logos/${logoName}`;
