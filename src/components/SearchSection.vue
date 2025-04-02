@@ -83,7 +83,7 @@
         </div>
         <div class="uk-width-1-1 uk-width-1-4@m custom-1-4">
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
-            <a href="#/" class="action-audience" @click.prevent="showPromotedItems">
+            <a href="#/" class="action-audience" :class="{'grey-background': promotedShow }" @click.prevent="showPromotedItems(true)">
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
@@ -95,7 +95,6 @@
     </div>
   </div>
   <SearchResults :results="searchResults"/>
-
   <div>
     <div id="no-result-modal" class="default-modal" ref="noResultModal" uk-modal>
       <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
@@ -133,7 +132,7 @@
 import axios from 'axios';
 import Papa from 'papaparse';
 import SearchResults from './SearchResults.vue';
-import UIkit from "uikit"; // Ensure the correct path
+
 
 export default {
   components: {
@@ -153,9 +152,16 @@ export default {
       locationPermissionDenied: null,
       emptyDataMessage: '',
       emptyDataName: '',
+      promotedShow: false,
     };
   },
   mounted() {
+    if (this.$isLocationAvailable()) {
+      const {latitude, longitude} = this.$getUserLocation();
+      this.userLocation = {latitude, longitude};
+    }
+    this.locationPermissionDenied = !this.$isLocationAvailable();
+
     this.loadData();
     this.setFormFieldsFromUrl();
     this.loadPromotedItemsOnPageLoad();
@@ -240,11 +246,9 @@ export default {
     async performSearch(event) {
       event.preventDefault();
       this.isLoading = true; // Show loading
+      this.promotedShow = false;
 
       try {
-        this.userLocation = localStorage.getItem("userCoordinates") ?? null;
-        this.locationPermissionDenied = this.getItemWithExpiry("locationPermissionDenied");
-
         let filter = {};
 
         // Collect filter inputs, but only include non-empty values
@@ -348,37 +352,6 @@ export default {
 
       return sortedDataWithStores;
     },
-    // not used anymore, but wait for the next steps
-    async searchChainStoreLocation(SL_Loc_Name) {
-      try {
-        let filter = {};
-        filter.SL_Loc_Name = SL_Loc_Name;
-
-        if (this.userLocation) {
-          const {latitude, longitude} = JSON.parse(this.userLocation);
-          filter.SL_location = [longitude, latitude];
-        }
-
-        const filterString = JSON.stringify(filter);
-        const queryParams = new URLSearchParams();
-        queryParams.append("format", "json");
-        queryParams.append("filter", filterString);
-        queryParams.append("iid", "673f39ed0630441602677413");
-
-        if (!this.userLocation) {
-          queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
-        }
-
-        const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
-        const url = `${baseUrl}?${queryParams.toString()}`;
-
-        const response = await axios.get(url);
-        return response.data.data;
-      } catch (error) {
-        console.error("Error searching for chain store location:", error);
-        return null;
-      }
-    },
     setFormFieldsFromUrl() {
       window.addEventListener('load', () => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -411,27 +384,9 @@ export default {
         }
       });
     },
-    getItemWithExpiry(key) {
-      const itemStr = localStorage.getItem(key);
-      if (!itemStr) {
-        return null;
-      }
-      const item = JSON.parse(itemStr);
-      const now = new Date();
-      if (now.getTime() > item.expiry) {
-        localStorage.removeItem(key);
-        return null;
-      }
-      return item.value;
-    },
-    handleKeydown(event) {
-      if (event.key === 'Enter') {
-        this.performSearch(event);
-      }
-    },
     async loadPromotedItemsOnPageLoad() {
+      this.promotedShow = false;
       try {
-        this.userLocation = localStorage.getItem("userCoordinates") ?? null;
         let queryParams = new URLSearchParams();
         queryParams.append("format", "json");
         let filter = {};
@@ -441,7 +396,7 @@ export default {
         queryParams.append("iid", "673f39ed0630441602677413");
 
         if (this.userLocation) {
-          const { latitude, longitude } = JSON.parse(this.userLocation);
+          const { latitude, longitude } = this.userLocation;
           queryParams.append("location", JSON.stringify([longitude, latitude]));
         }
 
@@ -487,14 +442,12 @@ export default {
         console.error("Error loading promoted items on page load:", error);
       }
     },
-    showPromotedItems() {
-      if (this.searchResults.length === 0) {
-        this.loadPromotedItemsOnPageLoad();
-      } else  {
-        this.searchResults = this.searchResults.filter(item => item.isPromoted === 1);
-      }
+    showPromotedItems(showedOnClick = false) {
+      this.resetSearch(new Event('submit'));
+      this.loadPromotedItemsOnPageLoad();
+      this.promotedShow = showedOnClick;
     },
-  }
+  },
 };
 </script>
 
@@ -529,5 +482,9 @@ export default {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.grey-background {
+  background-color: grey;
 }
 </style>
