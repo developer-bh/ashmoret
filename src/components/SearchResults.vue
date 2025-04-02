@@ -182,14 +182,12 @@ export default {
   },
   methods: {
     userLocation() {
-      const userCoordinates = localStorage.getItem("userCoordinates");
-      return !!userCoordinates;
+      return this.$isLocationAvailable();
     },
     calculateDistance(locLng, locLat) {
-      const userCoordinates = localStorage.getItem("userCoordinates");
-      if (!userCoordinates || locLng == null || locLat == null) return null;
+      if (!this.$isLocationAvailable() || locLng == null || locLat == null) return null;
 
-      let { latitude: userLat, longitude: userLng } = JSON.parse(userCoordinates);
+      let { latitude: userLat, longitude: userLng } = this.$getUserLocation();
       userLat = parseFloat(userLat);
       userLng = parseFloat(userLng);
       locLng = parseFloat(locLng);

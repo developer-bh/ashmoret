@@ -1,86 +1,65 @@
 <template>
-  <div>
-    <!-- The modal is removed as we are using the browser's location request -->
-  </div>
 </template>
 
 <script>
-import UIkit from 'uikit';
-import Icons from 'uikit/dist/js/uikit-icons';
+import { getCurrentInstance, ref, onMounted } from "vue";
+import UIkit from "uikit";
+import Icons from "uikit/dist/js/uikit-icons";
 
 UIkit.use(Icons);
 
 export default {
-  mounted() {
-    this.requestLocation();
+  setup() {
+    const locationAvailable = ref(false);
+    const userCoordinates = ref(null);
 
-    // Re-run location request every 12 hours
-    setInterval(() => {
-      this.requestLocation();
-    }, 12 * 60 * 60 * 1000);
-  },
-  methods: {
-    requestLocation() {
-      const userCoordinates = this.getItemWithExpiry('userCoordinates');
-
-      if (userCoordinates) {
-        console.log('Using cached coordinates:', userCoordinates);
-        return;
-      }
-
+    const requestLocation = () => {
       if (!navigator.geolocation) {
-        console.warn('Geolocation is not supported by your browser.');
-        this.setItemWithExpiry('locationPermissionDenied', true);
+        console.warn("Geolocation is not supported by your browser.");
+        locationAvailable.value = false;
         return;
       }
 
       navigator.geolocation.getCurrentPosition(
           (position) => {
-            const { latitude, longitude } = position.coords;
-            console.log('User coordinates:', latitude, longitude);
-            this.setItemWithExpiry('userCoordinates', { latitude, longitude });
+            userCoordinates.value = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            };
+            locationAvailable.value = true;
           },
           (error) => {
-            if (error.code === error.PERMISSION_DENIED) {
-              console.warn('Permission to access location was denied.');
-              this.setItemWithExpiry('locationPermissionDenied', true);
+            console.warn("Could not access location:", error.message);
+            locationAvailable.value = false;
+            userCoordinates.value = null;
 
-              // Remove stored coordinates only if they existed
-              if (localStorage.getItem('userCoordinates')) {
-                localStorage.removeItem('userCoordinates');
-              }
-            } else {
-              console.error('Error getting location:', error);
-              this.setItemWithExpiry('locationPermissionDenied', true);
-            }
+            document.dispatchEvent(new CustomEvent("locationUnavailable"));
           }
       );
-    },
-    setItemWithExpiry(key, value, ttl = 12 * 60 * 60 * 1000) {
-      const now = new Date();
-      const item = {
-        value: value,
-        expiry: now.getTime() + ttl,
-      };
-      localStorage.setItem(key, JSON.stringify(item));
-    },
-    getItemWithExpiry(key) {
-      const itemStr = localStorage.getItem(key);
-      if (!itemStr) {
-        return null;
+    };
+
+    // Check geolocation permission on mount
+    onMounted(() => {
+      if (navigator.permissions) {
+        navigator.permissions.query({ name: "geolocation" }).then((permissionStatus) => {
+          if (permissionStatus.state === "granted") {
+            requestLocation(); // Request location immediately if permission is granted
+          } else {
+            console.log("Geolocation permission not granted yet.");
+            requestLocation();
+          }
+        });
       }
-      const item = JSON.parse(itemStr);
-      const now = new Date();
-      if (now.getTime() > item.expiry) {
-        localStorage.removeItem(key);
-        return null;
-      }
-      return item.value;
+    });
+
+    // Make location methods globally accessible
+    const instance = getCurrentInstance();
+    if (instance) {
+      instance.appContext.config.globalProperties.$getUserLocation = () => userCoordinates.value;
+      instance.appContext.config.globalProperties.$isLocationAvailable = () => locationAvailable.value;
     }
+
+    return { locationAvailable, userCoordinates };
   }
 };
 </script>
-
-<style scoped>
-/* Add any styles if needed */
-</style>

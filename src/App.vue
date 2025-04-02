@@ -1,7 +1,7 @@
 <template>
   <div class="main">
-    <SearchSection />
     <LocationModal />
+    <SearchSection />
   </div>
 </template>
 
