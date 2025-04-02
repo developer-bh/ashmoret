@@ -3,16 +3,14 @@
 </template>
 
 <script>
+
 export default {
   props: {
-    src: String,
-    fallbackSrc: {
-      type: String,
-      default: './images/logos/logo-default.png'
-    },
+    src: String
   },
   data() {
     return {
+      fallbackSrc: new URL('/images/logos/logo-default.png', import.meta.url).href,
       currentSrc: this.imageUrl(this.src)
     };
   },
@@ -22,11 +20,10 @@ export default {
     },
     imageUrl(logoName) {
       if (!logoName || logoName.includes('no_logo') || logoName.includes('nologo') || logoName.includes('no-logo')) {
-        return './images/logos/logo-default.png'
+        return new URL('/images/logos/logo-default.png', import.meta.url).href;
       }
-
       return `https://clubs.linkc.co.il/uploads/Logos/${logoName}`;
-    },
+    }
   }
 };
 </script>
