@@ -83,7 +83,7 @@
         </div>
         <div class="uk-width-1-1 uk-width-1-4@m custom-1-4">
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
-            <a href="#/" class="action-audience" :class="{'grey-background': promotedShow }" @click.prevent="showPromotedItems(true)">
+            <a href="#/" class="action-audience" :class="{'active': promotedShow }" @click.prevent="showPromotedItems(true)">
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
@@ -482,9 +482,5 @@ export default {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.grey-background {
-  background-color: grey;
 }
 </style>

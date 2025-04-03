@@ -81,6 +81,8 @@ body {
         min-height: 41px;
         flex-direction: row;
         gap: 12px; } }
+    .search-section .action-audience.active {
+      background-color: #b3e5ff; }
   @media screen and (max-width: 992px) {
     .search-section .form-clear-wrapper {
       flex-direction: column-reverse;
