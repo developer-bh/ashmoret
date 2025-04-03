@@ -7,19 +7,21 @@
           <li :class="['card', { multiple: result.SL_CH_Code }]" v-for="result in results" :key="result.SL_BG_number" :data-id="result.SL_BG_number">
             <div class="uk-accordion-title flex" @click="changeMapLocation(result)">
               <div class="flex-item">
-                <div class="results-percents">
-                  <span class="percents">
-                    <span>
-                      <span class="symbol">%</span>
-                      {{ result.SL_DiscountTitle1 }}
+                <div class="flex">
+                  <div class="results-percents">
+                    <span class="percents">
+                      <span>
+                        <span class="symbol">%</span>
+                        {{ result.SL_DiscountTitle1 }}
+                      </span>
+                      הנחה
+                      <span class="discount-info">במעמד החיוב</span>
                     </span>
-                    הנחה
-                    <span class="discount-info">במעמד החיוב</span>
-                  </span>
-                </div>
-                <div class="results-logo">
-                  <div class="results-bage">רשת חנויות</div>
-                  <SafeImage :src="result.SL_LogoName"/>
+                  </div>
+                  <div class="results-logo">
+                    <div class="results-bage">רשת חנויות</div>
+                    <SafeImage :src="result.SL_LogoName"/>
+                  </div>
                 </div>
                 <div class="text">
                   <div class="results-title">
@@ -33,10 +35,18 @@
                   </div>
                   <div v-if="result.isPromoted" class="is-promoted">
                   </div>
+                  <div class="results-location show-mobile"
+                    v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
+                    <span class="icon">
+                      <img src="/images/icons/icon-location.svg" alt="Icon" />
+                    </span>
+                    {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים' : 'קילומטר ממך') }}
+                  </div>
                 </div>
               </div>
               <div class="flex-item">
-                <div class="results-location"
+                <div class="results-location show-desctop"
                     v-if="userLocation() && calculateDistance(result.SL_Longitude, result.SL_Latitude)">
                   <span class="icon">
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
@@ -58,10 +68,17 @@
                       <img src="/images/icons/icon-waze.svg" alt="Waze Icon" />
                     </span>
                   </a>
+                  
+                </div>
+                  <div class="accordion show-mobile">
+                                      <span class="icon">
+                                          <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
+                                          <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>
+                                      </span>
                 </div>
               </div>
               <div class="flex-item">
-                              <div class="accordion">
+                              <div class="accordion show-desctop">
                                       <span class="icon">
                                           <img src="/images/icons/icon-plus-accordion.svg" alt="Plus Icon"/>
                                           <img src="/images/icons/icon-minus-accordion.svg" alt="Minus Icon"/>

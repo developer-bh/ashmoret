@@ -218,7 +218,8 @@ body {
           width: 40%; }
           @media only screen and (max-width: 768px) {
             .results-section .card .flex .flex-item:nth-of-type(2) {
-              width: 100%; } }
+              width: 100%;
+              margin-top: 15px; } }
       .results-section .card .flex .results-percents {
         min-width: 81px;
         width: 81px;
@@ -233,6 +234,9 @@ body {
           font-weight: 900;
           line-height: 26.4px;
           text-align: center; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .results-percents .percents {
+              margin-bottom: 10px; } }
           .results-section .card .flex .results-percents .percents span {
             display: flex;
             align-items: center;
@@ -287,6 +291,10 @@ body {
           font-size: 12px;
           font-weight: 700;
           line-height: 1; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .results-logo .results-bage {
+              top: initial;
+              bottom: -5px; } }
       .results-section .card .flex .text {
         width: 100%;
         max-width: 422px;
@@ -372,6 +380,16 @@ body {
         @media only screen and (max-width: 1300px) {
           .results-section .card .flex .results-location {
             margin-left: 15px; } }
+        .results-section .card .flex .results-location.show-mobile {
+          display: none; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .results-location.show-mobile {
+              display: block; } }
+        .results-section .card .flex .results-location.show-desctop {
+          display: block; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .results-location.show-desctop {
+              display: none; } }
         .results-section .card .flex .results-location .icon img {
           min-width: 14px; }
       .results-section .card .flex .results-icons {
@@ -389,6 +407,16 @@ body {
         cursor: pointer; }
         .results-section .card .flex .accordion img:nth-of-type(2) {
           display: none; }
+        .results-section .card .flex .accordion.show-mobile {
+          display: none; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .accordion.show-mobile {
+              display: block; } }
+        .results-section .card .flex .accordion.show-desctop {
+          display: block; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .accordion.show-desctop {
+              display: none; } }
   .results-section .uk-accordion-content {
     margin-top: 5px;
     padding-bottom: 28px; }

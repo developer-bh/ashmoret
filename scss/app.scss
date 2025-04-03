@@ -293,6 +293,7 @@ body {
                     width: 40%;
                     @media only screen and (max-width: 768px) {
                         width: 100%;
+                        margin-top: 15px;
                     }
                 }
             }
@@ -310,6 +311,9 @@ body {
                     font-weight: 900;
                     line-height: 26.4px;
                     text-align: center;
+                    @media only screen and (max-width: 768px) {
+                        margin-bottom: 10px;
+                    }
                     span {
                         display: flex;
                         align-items: center;
@@ -370,6 +374,10 @@ body {
                     font-size: 12px;
                     font-weight: 700;
                     line-height: 1;
+                    @media only screen and (max-width: 768px) {
+                        top: initial;
+                        bottom: -5px;
+                    }
                 }
             }
             .text {
@@ -467,6 +475,19 @@ body {
                 @media only screen and (max-width: 1300px) {
                     margin-left: 15px;
                 }
+                &.show-mobile {
+                    display: none;
+                    @media screen and (max-width: 992px) {
+                        display: block;
+                    }
+
+                }
+                &.show-desctop {
+                    display: block;
+                    @media screen and (max-width: 992px) {
+                        display: none;
+                    }
+                }
                 .icon {
                     img {
                         min-width: 14px;
@@ -492,6 +513,19 @@ body {
                 cursor: pointer;
                 img {
                     &:nth-of-type(2) {
+                        display: none;
+                    }
+                }
+                &.show-mobile {
+                    display: none;
+                    @media screen and (max-width: 992px) {
+                        display: block;
+                    }
+
+                }
+                &.show-desctop {
+                    display: block;
+                    @media screen and (max-width: 992px) {
                         display: none;
                     }
                 }
