@@ -519,7 +519,9 @@ body {
                 &.show-mobile {
                     display: none;
                     @media screen and (max-width: 992px) {
-                        display: block;
+                        display: flex;
+                        justify-content: flex-end;
+                        width: 100%;
                     }
 
                 }

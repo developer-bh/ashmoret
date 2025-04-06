@@ -411,7 +411,9 @@ body {
           display: none; }
           @media screen and (max-width: 992px) {
             .results-section .card .flex .accordion.show-mobile {
-              display: block; } }
+              display: flex;
+              justify-content: flex-end;
+              width: 100%; } }
         .results-section .card .flex .accordion.show-desctop {
           display: block; }
           @media screen and (max-width: 992px) {
