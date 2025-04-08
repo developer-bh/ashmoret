@@ -171,7 +171,7 @@ export default {
       this.emptyDataName = name;
       this.emptyDataMessage = message;
       let localUikit = UIkit
-      // console.log();
+
       if (this.$refs.noResultModal) {
         const modal = localUikit.modal(this.$refs.noResultModal);
         modal.show();
@@ -269,6 +269,11 @@ export default {
         const freeText = document.getElementById("form-search")?.value;
         if (freeText) filter.freeText = freeText;
 
+        if (this.userLocation) {
+          const {latitude, longitude} = this.$getUserLocation();
+          filter.SL_location = [longitude, latitude];
+        }
+
         if (Object.keys(filter).length === 0) {
           this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפוש');
           this.isLoading = false; // Hide loading
@@ -279,8 +284,13 @@ export default {
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
         this.filter = filterString;
 
+        // Create a new object excluding specific keys
+        const filteredParams = Object.fromEntries(
+            Object.entries(filter).filter(([key]) => key !== 'SL_location')
+        );
+
         // Update URL with search parameters, excluding user location
-        const searchParams = new URLSearchParams(filter).toString();
+        const searchParams = new URLSearchParams(filteredParams).toString();
         window.history.pushState(null, '', `?${searchParams}`);
 
         // Build query parameters manually
@@ -392,12 +402,16 @@ export default {
         let filter = {};
         filter.isPromoted = 1;
 
+        if (this.userLocation) {
+          const {latitude, longitude} = this.$getUserLocation();
+          filter.SL_location = [longitude, latitude];
+        }
+
         queryParams.append("filter", JSON.stringify(filter));
         queryParams.append("iid", "673f39ed0630441602677413");
 
-        if (this.userLocation) {
-          const { latitude, longitude } = this.userLocation;
-          queryParams.append("location", JSON.stringify([longitude, latitude]));
+        if (!this.userLocation) {
+          queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
         const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
