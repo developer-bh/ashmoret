@@ -477,6 +477,10 @@ body {
             border-top: 1px solid #F6F8FF;
             border-bottom: 1px solid #F6F8FF;
             transition: .3s; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item {
+                flex-direction: column;
+                gap: 15px; } }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item.item-location {
               cursor: pointer;
               transition: background 0.3s ease; }
@@ -527,9 +531,21 @@ body {
                 text-transform: uppercase; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
             direction: ltr; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item {
+                flex-direction: row;
+                gap: 0; } }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone {
+                width: 40%;
+                justify-content: flex-start;
+                padding: 0 20px; } }
             .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone a {
               display: flex;
               justify-content: flex-end; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-waze {
+                width: 60%; } }
 
 .default-modal .uk-modal-dialog {
   width: 100%;

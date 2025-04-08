@@ -599,6 +599,10 @@ body {
                         border-top: 1px solid #F6F8FF;
                         border-bottom: 1px solid #F6F8FF;
                         transition: .3s;
+                        @media only screen and (max-width: 768px) {
+                            flex-direction: column;
+                            gap: 15px;
+                        }
                         &.item-location {
                             cursor: pointer;
                             transition: background 0.3s ease;
@@ -661,13 +665,27 @@ body {
                     .locations-wrapper {
                         direction: ltr;
                         .item {
+                            @media only screen and (max-width: 768px) {
+                                flex-direction: row;
+                                gap: 0;
+                            }
                             .results-phone {
+                                @media only screen and (max-width: 768px) {
+                                    width: 40%;
+                                    justify-content: flex-start;
+                                    padding: 0 20px;
+                                }
                                 a {
                                     display: flex;
                                     justify-content: flex-end;
                                 }
                             }
-                        }
+                            .results-waze {
+                                @media only screen and (max-width: 768px) {
+                                    width: 60%;
+                                }
+                            }
+                        } 
                     }
                 }
             }

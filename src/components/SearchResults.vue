@@ -41,7 +41,7 @@
                       <img src="/images/icons/icon-location.svg" alt="Icon" />
                     </span>
                     {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים' : 'קילומטר ממך') }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : 'קילומטר ממך ') }}
                   </div>
                 </div>
               </div>
@@ -52,7 +52,7 @@
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
                   {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים' : 'קילומטר ממך') }}
+                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' :  : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : 'קילומטר ממך ') }}
                 </div>
                 <div class="results-icons" v-if="!result.SL_CH_Code">
                   <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" @click.stop>
@@ -94,7 +94,7 @@
                       <div class="results-big-text">
                         <p>{{ result.SL_LocDescription }}</p>
                       </div>
-                      <div class="item">
+                      <div class="item" v-if="result.SL_Site || result.SL_email">
                         <div class="results-website" v-if="result.SL_Site">
                           <a :href="result.SL_Site" target="_blank" @click="goToSite(result.SL_Site)">
                             <div class="icon">
