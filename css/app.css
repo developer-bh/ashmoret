@@ -503,12 +503,23 @@ body {
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze img,
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze svg {
                 min-width: 24px; }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website a,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze a {
+                white-space: nowrap; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email,
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
               width: 55%;
               padding-right: 20px;
               text-align: right; }
+              @media screen and (max-width: 768px) {
+                .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email,
+                .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
+                  width: 100%; } }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email .icon,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone .icon {
+                min-width: 24px; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website a {
+              white-space: nowrap;
               text-decoration: underline; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze,
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
