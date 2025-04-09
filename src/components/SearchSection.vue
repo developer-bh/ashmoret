@@ -269,7 +269,7 @@ export default {
         const freeText = document.getElementById("form-search")?.value;
         if (freeText) filter.freeText = freeText;
 
-        if (this.userLocation) {
+        if (this.$isLocationAvailable()) {
           const {latitude, longitude} = this.$getUserLocation();
           filter.SL_location = [longitude, latitude];
         }
@@ -300,7 +300,7 @@ export default {
 
         if (filterString) queryParams.append("filter", filterString);
 
-        if (!this.userLocation) {
+        if (!this.$isLocationAvailable()) {
           queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
@@ -402,7 +402,7 @@ export default {
         let filter = {};
         filter.isPromoted = 1;
 
-        if (this.userLocation) {
+        if (this.$isLocationAvailable()) {
           const {latitude, longitude} = this.$getUserLocation();
           filter.SL_location = [longitude, latitude];
         }
@@ -410,7 +410,7 @@ export default {
         queryParams.append("filter", JSON.stringify(filter));
         queryParams.append("iid", "673f39ed0630441602677413");
 
-        if (!this.userLocation) {
+        if (!this.$isLocationAvailable()) {
           queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
