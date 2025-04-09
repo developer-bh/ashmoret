@@ -503,9 +503,6 @@ body {
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze img,
               .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze svg {
                 min-width: 24px; }
-              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website a,
-              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze a {
-                white-space: nowrap; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email,
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
               width: 55%;
