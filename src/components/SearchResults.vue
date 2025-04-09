@@ -41,7 +41,7 @@
                       <img src="/images/icons/icon-location.svg" alt="Icon" />
                     </span>
                     {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : 'קילומטר ממך ') }}
+                  {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : ' קילומטר ממך') }}
                   </div>
                 </div>
               </div>
@@ -52,7 +52,7 @@
                     <img src="/images/icons/icon-location.svg" alt="Icon" />
                   </span>
                   {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).distance }}
-                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' :  : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : 'קילומטר ממך ') }}
+                {{ calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'meters' ? 'מטרים ממך' : (calculateDistance(result.SL_Longitude, result.SL_Latitude).measurement === 'kilometers' ? 'קילומטרים ממך' : ' קילומטר ממך') }}
                 </div>
                 <div class="results-icons" v-if="!result.SL_CH_Code">
                   <a :href="`tel:${result.SL_BG_Phone}`" class="results-phone" @click.stop>
