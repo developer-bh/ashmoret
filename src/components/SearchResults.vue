@@ -98,7 +98,7 @@
                         <div class="results-website" v-if="result.SL_Site">
                           <a :href="result.SL_Site" target="_blank" @click="goToSite(result.SL_Site)">
                             <div class="icon">
-                              <img src="/images/icons/icon-globe.svg" alt="Icon Globe" />
+                              <img src="/images/icons/icon-globe-2.svg" alt="Icon Globe" />
                             </div>
                             {{ result.SL_Site }}
                           </a>
@@ -106,7 +106,7 @@
                         <div class="results-email" v-if="result.SL_email">
                           <a :href="`mailto:${result.SL_email}`">
                             <div class="icon">
-                              <img src="/images/icons/icon-mail.svg" alt="Icon Mail" />
+                              <img src="/images/icons/icon-mail-2.svg" alt="Icon Mail" />
                             </div>
                             {{ result.SL_email }}
                           </a>
