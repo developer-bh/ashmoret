@@ -148,23 +148,18 @@ export default {
       searchResults: [], // Add searchResults to the data object,
       filter: null,
       isLoading: false,
-      userLocation: null,
-      locationPermissionDenied: null,
       emptyDataMessage: '',
       emptyDataName: '',
       promotedShow: false,
     };
   },
   mounted() {
-    if (this.$isLocationAvailable()) {
-      const {latitude, longitude} = this.$getUserLocation();
-      this.userLocation = {latitude, longitude};
-    }
-    this.locationPermissionDenied = !this.$isLocationAvailable();
-
     this.loadData();
     this.setFormFieldsFromUrl();
-    this.loadPromotedItemsOnPageLoad();
+
+    document.addEventListener('locationInfoSet', () => {
+      this.loadPromotedItemsOnPageLoad();
+    });
   },
   methods: {
     showEmptyDataModal(name, message) {
