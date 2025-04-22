@@ -83,7 +83,7 @@
         </div>
         <div class="uk-width-1-1 uk-width-1-4@m custom-1-4">
           <div class="uk-card uk-card-default uk-card-body" uk-height-match="target: > div">
-            <a href="#/" class="action-audience" :class="{'grey-background': promotedShow }" @click.prevent="showPromotedItems(true)">
+            <a href="#/" class="action-audience" :class="{'active': promotedShow }" @click.prevent="showPromotedItems(true)">
               <span class="icon">
                 <img src="../../images/icons/icon-star.svg" alt="Icon"/>
               </span>
@@ -148,30 +148,25 @@ export default {
       searchResults: [], // Add searchResults to the data object,
       filter: null,
       isLoading: false,
-      userLocation: null,
-      locationPermissionDenied: null,
       emptyDataMessage: '',
       emptyDataName: '',
       promotedShow: false,
     };
   },
   mounted() {
-    if (this.$isLocationAvailable()) {
-      const {latitude, longitude} = this.$getUserLocation();
-      this.userLocation = {latitude, longitude};
-    }
-    this.locationPermissionDenied = !this.$isLocationAvailable();
-
     this.loadData();
     this.setFormFieldsFromUrl();
-    this.loadPromotedItemsOnPageLoad();
+
+    document.addEventListener('locationInfoSet', () => {
+      this.loadPromotedItemsOnPageLoad();
+    });
   },
   methods: {
     showEmptyDataModal(name, message) {
       this.emptyDataName = name;
       this.emptyDataMessage = message;
       let localUikit = UIkit
-      // console.log();
+
       if (this.$refs.noResultModal) {
         const modal = localUikit.modal(this.$refs.noResultModal);
         modal.show();
@@ -269,6 +264,11 @@ export default {
         const freeText = document.getElementById("form-search")?.value;
         if (freeText) filter.freeText = freeText;
 
+        if (this.$isLocationAvailable()) {
+          const {latitude, longitude} = this.$getUserLocation();
+          filter.SL_location = [longitude, latitude];
+        }
+
         if (Object.keys(filter).length === 0) {
           this.showEmptyDataModal('NoParametersModal', 'חסרים פרמטרים לחיפוש');
           this.isLoading = false; // Hide loading
@@ -279,8 +279,13 @@ export default {
         const filterString = Object.keys(filter).length ? JSON.stringify(filter) : null;
         this.filter = filterString;
 
+        // Create a new object excluding specific keys
+        const filteredParams = Object.fromEntries(
+            Object.entries(filter).filter(([key]) => key !== 'SL_location')
+        );
+
         // Update URL with search parameters, excluding user location
-        const searchParams = new URLSearchParams(filter).toString();
+        const searchParams = new URLSearchParams(filteredParams).toString();
         window.history.pushState(null, '', `?${searchParams}`);
 
         // Build query parameters manually
@@ -290,7 +295,7 @@ export default {
 
         if (filterString) queryParams.append("filter", filterString);
 
-        if (!this.userLocation) {
+        if (!this.$isLocationAvailable()) {
           queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
@@ -392,12 +397,16 @@ export default {
         let filter = {};
         filter.isPromoted = 1;
 
+        if (this.$isLocationAvailable()) {
+          const {latitude, longitude} = this.$getUserLocation();
+          filter.SL_location = [longitude, latitude];
+        }
+
         queryParams.append("filter", JSON.stringify(filter));
         queryParams.append("iid", "673f39ed0630441602677413");
 
-        if (this.userLocation) {
-          const { latitude, longitude } = this.userLocation;
-          queryParams.append("location", JSON.stringify([longitude, latitude]));
+        if (!this.$isLocationAvailable()) {
+          queryParams.append("sort", "{\"SL_BGNumberGroupOrder\":1}");
         }
 
         const baseUrl = "https://cdnapi.bamboo-video.com/api/ashmoret/";
@@ -482,9 +491,5 @@ export default {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.grey-background {
-  background-color: grey;
 }
 </style>

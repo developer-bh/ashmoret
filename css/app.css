@@ -81,6 +81,8 @@ body {
         min-height: 41px;
         flex-direction: row;
         gap: 12px; } }
+    .search-section .action-audience.active {
+      background-color: #b3e5ff; }
   @media screen and (max-width: 992px) {
     .search-section .form-clear-wrapper {
       flex-direction: column-reverse;
@@ -216,7 +218,8 @@ body {
           width: 40%; }
           @media only screen and (max-width: 768px) {
             .results-section .card .flex .flex-item:nth-of-type(2) {
-              width: 100%; } }
+              width: 100%;
+              margin-top: 15px; } }
       .results-section .card .flex .results-percents {
         min-width: 81px;
         width: 81px;
@@ -231,6 +234,9 @@ body {
           font-weight: 900;
           line-height: 26.4px;
           text-align: center; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .results-percents .percents {
+              margin-bottom: 10px; } }
           .results-section .card .flex .results-percents .percents span {
             display: flex;
             align-items: center;
@@ -285,6 +291,10 @@ body {
           font-size: 12px;
           font-weight: 700;
           line-height: 1; }
+          @media only screen and (max-width: 768px) {
+            .results-section .card .flex .results-logo .results-bage {
+              top: initial;
+              bottom: -5px; } }
       .results-section .card .flex .text {
         width: 100%;
         max-width: 422px;
@@ -370,6 +380,16 @@ body {
         @media only screen and (max-width: 1300px) {
           .results-section .card .flex .results-location {
             margin-left: 15px; } }
+        .results-section .card .flex .results-location.show-mobile {
+          display: none; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .results-location.show-mobile {
+              display: block; } }
+        .results-section .card .flex .results-location.show-desctop {
+          display: block; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .results-location.show-desctop {
+              display: none; } }
         .results-section .card .flex .results-location .icon img {
           min-width: 14px; }
       .results-section .card .flex .results-icons {
@@ -387,6 +407,18 @@ body {
         cursor: pointer; }
         .results-section .card .flex .accordion img:nth-of-type(2) {
           display: none; }
+        .results-section .card .flex .accordion.show-mobile {
+          display: none; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .accordion.show-mobile {
+              display: flex;
+              justify-content: flex-end;
+              width: 100%; } }
+        .results-section .card .flex .accordion.show-desctop {
+          display: block; }
+          @media screen and (max-width: 992px) {
+            .results-section .card .flex .accordion.show-desctop {
+              display: none; } }
   .results-section .uk-accordion-content {
     margin-top: 5px;
     padding-bottom: 28px; }
@@ -445,6 +477,10 @@ body {
             border-top: 1px solid #F6F8FF;
             border-bottom: 1px solid #F6F8FF;
             transition: .3s; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item {
+                flex-direction: column;
+                gap: 15px; } }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item.item-location {
               cursor: pointer;
               transition: background 0.3s ease; }
@@ -472,7 +508,15 @@ body {
               width: 55%;
               padding-right: 20px;
               text-align: right; }
+              @media screen and (max-width: 768px) {
+                .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email,
+                .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
+                  width: 100%; } }
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-email .icon,
+              .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone .icon {
+                min-width: 24px; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-website a {
+              white-space: nowrap;
               text-decoration: underline; }
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-waze,
             .results-section .uk-accordion-content .results-additional .info .info-flex .item .results-phone {
@@ -495,9 +539,21 @@ body {
                 text-transform: uppercase; }
           .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper {
             direction: ltr; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item {
+                flex-direction: row;
+                gap: 0; } }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone {
+                width: 40%;
+                justify-content: flex-start;
+                padding: 0 20px; } }
             .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-phone a {
               display: flex;
               justify-content: flex-end; }
+            @media only screen and (max-width: 768px) {
+              .results-section .uk-accordion-content .results-additional .info .info-flex .locations-wrapper .item .results-waze {
+                width: 60%; } }
 
 .default-modal .uk-modal-dialog {
   width: 100%;

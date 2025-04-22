@@ -27,13 +27,15 @@ export default {
               longitude: position.coords.longitude
             };
             locationAvailable.value = true;
+
+            document.dispatchEvent(new CustomEvent('locationInfoSet'));
           },
           (error) => {
             console.warn("Could not access location:", error.message);
             locationAvailable.value = false;
             userCoordinates.value = null;
 
-            document.dispatchEvent(new CustomEvent("locationUnavailable"));
+            document.dispatchEvent(new CustomEvent('locationInfoSet'));
           }
       );
     };
